@@ -1,0 +1,252 @@
+Data collection: jigsaw
+  imported from path: /Users/prl222/bias_datasets/civil_comments/all_data.csv. 1999516 samples.
+  excluded data without entity annotations. 448000 samples.
+  created gender column with max annotator percentage and list of subgroups with that value
+  created sexual_orientation column with max annotator percentage and list of subgroups with that value
+  created religion column with max annotator percentage and list of subgroups with that value
+  created race column with max annotator percentage and list of subgroups with that value
+  created disability column with max annotator percentage and list of subgroups with that value
+  prepared data file saved to: ./data/jigsaw.csv
+jigsaw fetched, prepared, and saved to data folder
+Data collection: xtremespeech
+  /Users/prl222/bias_datasets/Xtremespeech_request/india_train.csv not included due to possible malformed input file.
+  /Users/prl222/bias_datasets/Xtremespeech_request/india_dev.csv not included due to possible malformed input file.
+  /Users/prl222/bias_datasets/Xtremespeech_request/india_test.csv not included due to possible malformed input file.
+  imported 5180 samples from kenya_re dataset.
+... split counts:
+train    4144
+dev       518
+test      518
+Name: split, dtype: int64
+  5063 after removing empty text fields.
+... split counts:
+train    4044
+dev       512
+test      507
+Name: split, dtype: int64
+  loaded data: 5063 samples.
+ ... country counts:
+kenya_re    5063
+Name: country, dtype: int64
+  created gender categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... gender counts:
+0    4671
+1     392
+Name: gender, dtype: int64
+ ... of languages:
+English & Swahili    201
+English              145
+Swahili               46
+Name: Language, dtype: int64
+  created sexual_orientation categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... sexual_orientation counts:
+0    4985
+1      78
+Name: sexual_orientation, dtype: int64
+ ... of languages:
+English              39
+English & Swahili    25
+Swahili              14
+Name: Language, dtype: int64
+  created religion categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... religion counts:
+0    4952
+1     111
+Name: religion, dtype: int64
+ ... of languages:
+English              79
+English & Swahili    26
+Swahili               6
+Name: Language, dtype: int64
+  created race categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... race counts:
+0    4983
+1      80
+Name: race, dtype: int64
+ ... of languages:
+English & Swahili    37
+English              34
+Swahili               9
+Name: Language, dtype: int64
+  created economic_status categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... economic_status counts:
+0    5030
+1      33
+Name: economic_status, dtype: int64
+ ... of languages:
+English              23
+English & Swahili     9
+Swahili               1
+Name: Language, dtype: int64
+  created other categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... other counts:
+0    3591
+1    1472
+Name: other, dtype: int64
+ ... of languages:
+English              701
+English & Swahili    674
+Swahili               97
+Name: Language, dtype: int64
+  prepared data file saved to: ./data/xtremespeech.csv
+xtremespeech fetched, prepared, and saved to data folder
+Data collection: gabhatecorpus
+  imported from path: /Users/prl222/bias_datasets/GabHateCorpus/GabHateCorpus_annotations.tsv. 86529 samples.
+11249 annotations samples with target labels.
+  aggregating annotations:
+7813 aggregated samples with categorical target labels.
+  created gender column with max annotator percentage and list of subgroups with that value
+  created sexual_orientation column with max annotator percentage and list of subgroups with that value
+  created religion column with max annotator percentage and list of subgroups with that value
+  created race column with max annotator percentage and list of subgroups with that value
+  created disability column with max annotator percentage and list of subgroups with that value
+  created origin column with max annotator percentage and list of subgroups with that value
+  created politics column with max annotator percentage and list of subgroups with that value
+  prepared data file saved to: ./data/gabhatecorpus.csv
+gabhatecorpus fetched, prepared, and saved to data folder
+Data collection: hatexplain
+ imported 20148 original samples
+ 12334 hateful samples with tareget annotations
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:78: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d['final_target'] = d.apply(lambda row: generate_target_info(row['target1'], row['target2'], row['target3']), axis=1)
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created gender categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... gender counts:
+0    10959
+1     1375
+Name: gender, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created sexual_orientation categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... sexual_orientation counts:
+0    10691
+1     1643
+Name: sexual_orientation, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created religion categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... religion counts:
+0    8553
+1    3781
+Name: religion, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created race categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... race counts:
+0    7737
+1    4597
+Name: race, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created origin categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... origin counts:
+0    11692
+1      642
+Name: origin, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created disability categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... disability counts:
+0    12280
+1       54
+Name: disability, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created economic_status categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... economic_status counts:
+0    12325
+1        9
+Name: economic_status, dtype: int64
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:80: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}_list"] = d['final_target'].apply(lambda final_target: [subg for subg in subg_l
+/Users/prl222/OneDrive - The Open University/Projects/hate-speech-identities/functions/dataCollect/hatexplain.py:82: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  d.loc[:, f"{g}"] = d[f"{g}_list"].apply(lambda x: 0 if len(x) == 0 else 1)
+  created miscellaneous categorical column (1 if text annotated with any of its subgroup) and list of subgroups.
+... miscellaneous counts:
+0    11622
+1      712
+Name: miscellaneous, dtype: int64
+hatexplain fetched, prepared, and saved to data folder
