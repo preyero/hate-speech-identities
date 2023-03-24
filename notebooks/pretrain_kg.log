@@ -1,0 +1,412 @@
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  3092/5063 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 78
+  156 unique positive samples
+2*n (78) = 156 - 0 duplicates
+  -- gender_0.5: 86
+  -- sexual_orientation_0.5: 78
+  156 unique negative samples:
+  -- religion_0.5: 31
+  -- race_0.5: 31
+  -- economic_status_0.5: 32
+  -- other_0.5: 46
+  -- none_0.5: 31
+ 312 unique train samples: 2*n (156) = 312 - 0 duplicates:
+  -- gendersexualorientation:
+1    156
+0    156
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: xtremespeech_0.5_gender-sexual_orientation.csv.
+indexed 312 documents
+Executed in 0.2817990779876709 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = hierarchical
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical.pkl
+Executed in 0.027566194534301758 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=docf
+Executed in 0.010395288467407227 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical-docf
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['logits']}
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  3092/5063 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 78
+  156 unique positive samples
+2*n (78) = 156 - 0 duplicates
+  -- gender_0.5: 86
+  -- sexual_orientation_0.5: 78
+  156 unique negative samples:
+  -- religion_0.5: 31
+  -- race_0.5: 31
+  -- economic_status_0.5: 32
+  -- other_0.5: 46
+  -- none_0.5: 31
+ 312 unique train samples: 2*n (156) = 312 - 0 duplicates:
+  -- gendersexualorientation:
+1    156
+0    156
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: xtremespeech_0.5_gender-sexual_orientation.csv.
+indexed 312 documents
+Executed in 0.30837488174438477 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = hierarchical
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical.pkl
+Executed in 0.007436037063598633 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=logits
+Executed in 0.03453516960144043 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical-logits
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['multiNB']}
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  3092/5063 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 78
+  156 unique positive samples
+2*n (78) = 156 - 0 duplicates
+  -- gender_0.5: 86
+  -- sexual_orientation_0.5: 78
+  156 unique negative samples:
+  -- religion_0.5: 31
+  -- race_0.5: 31
+  -- economic_status_0.5: 32
+  -- other_0.5: 46
+  -- none_0.5: 31
+ 312 unique train samples: 2*n (156) = 312 - 0 duplicates:
+  -- gendersexualorientation:
+1    156
+0    156
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: xtremespeech_0.5_gender-sexual_orientation.csv.
+indexed 312 documents
+Executed in 0.2677299976348877 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = hierarchical
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical.pkl
+Executed in 0.006506919860839844 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=multiNB
+Executed in 0.020905017852783203 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical-multiNB
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['docf']}
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  3092/5063 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 78
+  156 unique positive samples
+2*n (78) = 156 - 0 duplicates
+  -- gender_0.5: 86
+  -- sexual_orientation_0.5: 78
+  156 unique negative samples:
+  -- religion_0.5: 31
+  -- race_0.5: 31
+  -- economic_status_0.5: 32
+  -- other_0.5: 46
+  -- none_0.5: 31
+ 312 unique train samples: 2*n (156) = 312 - 0 duplicates:
+  -- gendersexualorientation:
+1    156
+0    156
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: xtremespeech_0.5_gender-sexual_orientation.csv.
+indexed 312 documents
+Executed in 0.2889740467071533 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = none
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem.pkl
+  inferring information from asserted entities
+  checkpoint to: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem-none.pkl
+Executed in 0.005903959274291992 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=docf
+Executed in 0.003468036651611328 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-docf
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['logits']}
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  3092/5063 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 78
+  156 unique positive samples
+2*n (78) = 156 - 0 duplicates
+  -- gender_0.5: 86
+  -- sexual_orientation_0.5: 78
+  156 unique negative samples:
+  -- religion_0.5: 31
+  -- race_0.5: 31
+  -- economic_status_0.5: 32
+  -- other_0.5: 46
+  -- none_0.5: 31
+ 312 unique train samples: 2*n (156) = 312 - 0 duplicates:
+  -- gendersexualorientation:
+1    156
+0    156
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: xtremespeech_0.5_gender-sexual_orientation.csv.
+indexed 312 documents
+Executed in 0.307131290435791 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = none
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem-none.pkl
+Executed in 0.0049898624420166016 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=logits
+Executed in 0.015214920043945312 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-logits
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['multiNB']}
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  3092/5063 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 78
+  156 unique positive samples
+2*n (78) = 156 - 0 duplicates
+  -- gender_0.5: 86
+  -- sexual_orientation_0.5: 78
+  156 unique negative samples:
+  -- religion_0.5: 31
+  -- race_0.5: 31
+  -- economic_status_0.5: 32
+  -- other_0.5: 46
+  -- none_0.5: 31
+ 312 unique train samples: 2*n (156) = 312 - 0 duplicates:
+  -- gendersexualorientation:
+1    156
+0    156
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: xtremespeech_0.5_gender-sexual_orientation.csv.
+indexed 312 documents
+Executed in 0.3581359386444092 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = none
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_xtremespeech_gendersexualorientation_0.5-stem-none.pkl
+Executed in 0.01174783706665039 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=multiNB
+Executed in 0.016570091247558594 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-multiNB
+(venv) (base) MCL293439:hate-speech-identities prl222$ bash notebooks/pretrain_kg.sh
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+^Z
+[5]+  Stopped                 bash notebooks/pretrain_kg.sh
+(venv) (base) MCL293439:hate-speech-identities prl222$ bash notebooks/pretrain_kg.sh
+Data collection: jigsaw
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Data collection: xtremespeech
+xtremespeech imported successfully from data folder: 5063 annotations samples.
+Data collection: gabhatecorpus
+gabhatecorpus imported successfully from data folder: 7813 annotations samples.
+Data collection: hatexplain
+hatexplain imported successfully from data folder: 12334 annotations samples.
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  260337/448000 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 12713
+  25426 unique positive samples
+2*n (12713) = 25426 - 0 duplicates
+  -- gender_0.5: 16850
+  -- sexual_orientation_0.5: 12713
+  25426 unique negative samples:
+  -- religion_0.5: 7862
+  -- race_0.5: 7006
+  -- disability_0.5: 4741
+  -- none_0.5: 6895
+ 50852 unique train samples: 2*n (25426) = 50852 - 0 duplicates:
+  -- gendersexualorientation:
+1    25426
+0    25426
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: jigsaw_0.5_gendersexualorientation.
+indexed 50852 documents
+Executed in 68.85317707061768 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = hierarchical
+  matching entities
+  checkpoint to: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem.pkl
+  inferring information from asserted entities
+  checkpoint to: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical.pkl
+Executed in 785.6214108467102 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=docf
+Executed in 2.1639511585235596 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical-docf
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['logits']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  260337/448000 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 12713
+  25426 unique positive samples
+2*n (12713) = 25426 - 0 duplicates
+  -- gender_0.5: 16850
+  -- sexual_orientation_0.5: 12713
+  25426 unique negative samples:
+  -- religion_0.5: 7862
+  -- race_0.5: 7006
+  -- disability_0.5: 4741
+  -- none_0.5: 6895
+ 50852 unique train samples: 2*n (25426) = 50852 - 0 duplicates:
+  -- gendersexualorientation:
+1    25426
+0    25426
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: jigsaw_0.5_gendersexualorientation
+indexed 50852 documents
+Executed in 63.87040328979492 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = hierarchical
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical.pkl
+Executed in 3.467377185821533 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=logits
+Executed in 5.528953790664673 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical-logits
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['multiNB']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  260337/448000 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 12713
+  25426 unique positive samples
+2*n (12713) = 25426 - 0 duplicates
+  -- gender_0.5: 16850
+  -- sexual_orientation_0.5: 12713
+  25426 unique negative samples:
+  -- religion_0.5: 7862
+  -- race_0.5: 7006
+  -- disability_0.5: 4741
+  -- none_0.5: 6895
+ 50852 unique train samples: 2*n (25426) = 50852 - 0 duplicates:
+  -- gendersexualorientation:
+1    25426
+0    25426
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: jigsaw_0.5_gendersexualorientation
+indexed 50852 documents
+Executed in 65.43576383590698 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = hierarchical
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical.pkl
+Executed in 3.284623861312866 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=multiNB
+Executed in 3.018883228302002 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical-multiNB
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['docf']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  260337/448000 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 12713
+  25426 unique positive samples
+2*n (12713) = 25426 - 0 duplicates
+  -- gender_0.5: 16850
+  -- sexual_orientation_0.5: 12713
+  25426 unique negative samples:
+  -- religion_0.5: 7862
+  -- race_0.5: 7006
+  -- disability_0.5: 4741
+  -- none_0.5: 6895
+ 50852 unique train samples: 2*n (25426) = 50852 - 0 duplicates:
+  -- gendersexualorientation:
+1    25426
+0    25426
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: jigsaw_0.5_gendersexualorientation
+indexed 50852 documents
+Executed in 59.819764852523804 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = none
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem.pkl
+  inferring information from asserted entities
+  checkpoint to: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem-none.pkl
+Executed in 0.6567018032073975 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=docf
+Executed in 0.2020411491394043 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-none-docf
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['logits']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  260337/448000 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 12713
+  25426 unique positive samples
+2*n (12713) = 25426 - 0 duplicates
+  -- gender_0.5: 16850
+  -- sexual_orientation_0.5: 12713
+  25426 unique negative samples:
+  -- religion_0.5: 7862
+  -- race_0.5: 7006
+  -- disability_0.5: 4741
+  -- none_0.5: 6895
+ 50852 unique train samples: 2*n (25426) = 50852 - 0 duplicates:
+  -- gendersexualorientation:
+1    25426
+0    25426
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: jigsaw_0.5_gendersexualorientation
+indexed 50852 documents
+Executed in 62.777923822402954 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = none
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem-none.pkl
+Executed in 0.6808269023895264 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=logits
+Executed in 1.0656249523162842 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-none-logits
+* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
+Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+ Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['multiNB']}
+jigsaw imported successfully from data folder: 448000 annotations samples.
+Found OWL file in output folder. Importing.
+Sampling distribution with thr=0.5 for gendersexualorientation
+  260337/448000 samples with no identity annotations under 0.5
+  min gender or sexual_orientation sample: 12713
+  25426 unique positive samples
+2*n (12713) = 25426 - 0 duplicates
+  -- gender_0.5: 16850
+  -- sexual_orientation_0.5: 12713
+  25426 unique negative samples:
+  -- religion_0.5: 7862
+  -- race_0.5: 7006
+  -- disability_0.5: 4741
+  -- none_0.5: 6895
+ 50852 unique train samples: 2*n (25426) = 50852 - 0 duplicates:
+  -- gendersexualorientation:
+1    25426
+0    25426
+Name: gendersexualorientation, dtype: int64
+  Pre-training corpus exported to ./data: jigsaw_0.5_gendersexualorientation
+indexed 50852 documents
+Executed in 69.01223587989807 seconds.
+Identifying entities asserted and inferred in train subset: infer_method = none
+  found checkpoint of matched entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem.pkl
+  found checkpoint of inferred entities. Importing from: ./models/adaptation/checkpoints/gsso_jigsaw_gendersexualorientation_0.5-stem-none.pkl
+Executed in 0.7531490325927734 seconds.
+Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=multiNB
+Executed in 0.5986790657043457 seconds.
+ Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-none-multiNB
