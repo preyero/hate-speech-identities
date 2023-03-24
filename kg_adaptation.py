@@ -160,6 +160,7 @@ def adaptation_subset(d: pd.DataFrame,
     print(f' {df_train.shape[0]} unique train samples: '
           f'2*n ({n_pos}) = {2 * n_pos} - {2 * n_pos - df_train.shape[0]} duplicates:')
     print(f'  -- {y_col}: \n{df_train[y_col].value_counts()}')
+    df_eval = d.loc[~d.index.isin(df_train.index.to_list())]
 
     # Save pre-training corpus as CSV in data folder
     if data_folder:
@@ -168,7 +169,7 @@ def adaptation_subset(d: pd.DataFrame,
         df_train.to_csv(o_path, index=False)
         print(f'  Pre-training corpus exported to {data_folder}: {export_name}')
 
-    return df_train
+    return df_train, df_eval
 
 
 def __get_inferred(ent_assert: list,
@@ -287,7 +288,7 @@ def kg_adaptation(dname: str,
     kg_name = kg_path.rsplit('.', 1)[-2].split('/')[-1]
 
     # Draw pre-training corpus fom identities
-    d_train = adaptation_subset(d, g_labels, dname, config["thr"], identities)
+    d_train, _ = adaptation_subset(d, g_labels, dname, config["thr"], identities)
 
     # Entity matching: identify entities asserted and inferred in text using KG
     check_root = f'{CHECKPOINTS_FOLDER}/{kg_name}_{dname}_{y_col}_{config["thr"]}-{config["match_method"]}'

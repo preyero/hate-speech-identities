@@ -10,7 +10,7 @@ DNAMES = ['jigsaw', 'xtremespeech', 'gabhatecorpus', 'hatexplain']
 # Names to match output in Multi-output TargetIdentityLayer.
 OUTPUT_GROUP_NAMES = {'age': 'target_age', 'disability': 'target_disability', 'gender': 'target_gender',
                       'origin': 'target_origin', 'race': 'target_race', 'religion': 'target_religion',
-                      'sexual_orientation': 'target_sexuality', 'gendersexualorientation': 'target_gso'}
+                      'sexual_orientation': 'target_sexuality'}
 
 
 def import_dataset(dname: str, d_path: str = None):
