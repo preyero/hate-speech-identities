@@ -46,7 +46,8 @@ def import_dataset(dname: str, d_path: str = None):
 
 
 # Evaluating identity group identification models
-def prepare_for_model_evaluation(df: pd.DataFrame, text_col0: str, id_col0: str, identities_dict: Dict, output_names=None):
+def prepare_for_model_evaluation(df: pd.DataFrame, text_col0: str, id_col0: str, identities_dict: Dict,
+                                 thr: float = 0.5, output_names=None):
     """ prepare for evaluating identity group identification model as an external dataset"""
     # 1. Rename to match model output convention
     if output_names is None:
@@ -61,7 +62,7 @@ def prepare_for_model_evaluation(df: pd.DataFrame, text_col0: str, id_col0: str,
     # 2. Apply 0.5 hard thresholding to target annotations (y true)
     target_cols = sorted([col for col in df.columns if (col in output_names.values())])
     for target_col in target_cols:
-        df[target_col] = df[target_col].apply(lambda target_col: int(target_col >= 0.5))
+        df[target_col] = df[target_col].apply(lambda target_col: int(target_col >= thr))
 
     # 3. Add the OR(Gender, Sexuality) column
     df['target_gso'] = ((df['target_gender'] == 1) | (df['target_sexuality'] == 1)).astype('int')

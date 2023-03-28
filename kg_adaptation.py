@@ -94,9 +94,11 @@ def adaptation_subset(d: pd.DataFrame,
                       thr: int,
                       identities: List = None,
                       data_folder: str = DATA_FOLDER):
-    # Rule to determine n (max possible sample for Npos=Nneg)
-    # Add 'identities' to df_train: binary column with sample of related and not related texts for KG adaptation.
-    # Can be at group (e.g., gender) or subgroup (e.g., male) level.
+    """
+    Add 'identities' to df_train: binary column with sample of related and not related texts for KG adaptation.
+    Can be at group (e.g., gender) or subgroup (e.g., male) level.
+    Rule to determine n (max possible sample for Npos=Nneg)
+    """
     if identities is None:
         identities = ['gender', 'sexual_orientation']
     y_col = ''.join([i for identity in identities for i in identity.split('_')])
