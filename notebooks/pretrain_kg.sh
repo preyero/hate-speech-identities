@@ -30,7 +30,7 @@ do
       python kg_adaptation.py \
         --d_name jigsaw \
         --knowledge_graph_path /Users/prl222/language_resources/GSSO-master/gsso.owl \
-        --identities gender,sexual_orientation \
+        --identities_pretraining gender,sexual_orientation \
         --thr 0.5 \
         --match_method stem \
         --infer_method "$i" \

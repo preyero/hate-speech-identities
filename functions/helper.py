@@ -30,3 +30,53 @@ def get_metrics(y_trues: List[int],
                        zip(y_trues, y_preds)]}
         metrics = {**metrics, **thr_agnostic}
     return metrics
+
+
+# Functions for error and entity analyses
+def find_elbow(y, s=3):
+    """  identify the elbow point of a line plot of y-values in descending order implementing the elbow method """
+    from kneed import KneeLocator
+
+    # Find the knee/elbow point using the KneeLocator
+    kl = KneeLocator(range(len(y)), y, curve='convex', direction='decreasing', S=s)
+    kl.plot_knee()
+    elbow_point = kl.knee
+
+    return elbow_point
+
+
+def sample_error_partition(d, y_true_col, y_pred_col, id_col, sample_col, sample_size: int, partition_range: float, random_seed=1):
+    """ Create binary column with random error samples from a partition with predicted probability """
+    n = round(sample_size/4)
+    sample_ids = []
+    fn, fp = d.loc[(d[y_true_col] >= 0.5) & (d[y_pred_col] < 0.5)], d.loc[(d[y_true_col] < 0.5) & (d[y_pred_col] >= 0.5)]
+    pos_partition_proba, neg_partition_proba = 0.5+partition_range,0.5-partition_range
+    # append FNs
+    sample_ids = sample_ids + draw_sample(fn.loc[fn[y_pred_col] < neg_partition_proba, id_col], n, random_seed)
+    sample_ids = sample_ids + draw_sample(fn.loc[fn[y_pred_col] >= neg_partition_proba, id_col], n, random_seed)
+    # append FPs
+    sample_ids = sample_ids + draw_sample(fp.loc[fp[y_pred_col] < pos_partition_proba, id_col], n, random_seed)
+    sample_ids = sample_ids + draw_sample(fp.loc[fp[y_pred_col] >= pos_partition_proba, id_col], n, random_seed)
+    #
+    d[sample_col] = [0]*d.shape[0]
+    d.loc[d[id_col].isin(sample_ids), sample_col] = 1
+    return d
+
+
+# Partition proba is 0.75 and using tp (partition range 0.125).
+def sample_true_partition(d, y_true_col, y_pred_col, id_col, sample_col, sample_size: int, partition_range: float, random_seed=1):
+    n = round(sample_size/4)
+    sample_ids = []
+    high_tp, low_tp = d.loc[(d[y_true_col] >= 0.5) & (d[y_pred_col] >= 0.75)], d.loc[(d[y_true_col] >= 0.5) & (d[y_pred_col] >= 0.5) & (d[y_pred_col] < 0.75)]
+    high_partition_proba, low_partition_proba = 0.75 + partition_range, 0.75 - partition_range
+    # append low probable TPs
+    sample_ids += draw_sample(low_tp.loc[low_tp[y_pred_col] < low_partition_proba, id_col], n, random_seed)
+    sample_ids += draw_sample(low_tp.loc[low_tp[y_pred_col] >= low_partition_proba, id_col], n, random_seed)
+    # append high probable TPs
+    sample_ids += draw_sample(high_tp.loc[high_tp[y_pred_col] < high_partition_proba, id_col], n, random_seed)
+    sample_ids += draw_sample(high_tp.loc[high_tp[y_pred_col] >= high_partition_proba, id_col], n, random_seed)
+    #
+    d[sample_col] = [0]*d.shape[0]
+    d.loc[d[id_col].isin(sample_ids), sample_col] = 1
+    return d
+

@@ -356,7 +356,7 @@ def main():
                         help="Path to knowledge graph OWL file.",
                         )
 
-    parser.add_argument("--identities",
+    parser.add_argument("--identities_pretraining",
                         default=None,
                         type=str,
                         required=True,
@@ -410,7 +410,7 @@ def main():
     print('Computing entity weights: {}\n Optional args: {}'.format(args, other_args))
     kg_adaptation(args.d_name,
                   args.knowledge_graph_path,
-                  args.identities.split(','),
+                  args.identities_pretraining.split(','),
                   **other_args)
     return
 

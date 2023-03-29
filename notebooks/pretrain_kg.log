@@ -1,5 +1,5 @@
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+Computing entity weights: Namespace(d_name='xtremespeech', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
 xtremespeech imported successfully from data folder: 5063 annotations samples.
 Found OWL file in output folder. Importing.
@@ -32,7 +32,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 0.010395288467407227 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical-docf
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+Computing entity weights: Namespace(d_name='xtremespeech', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['logits']}
 xtremespeech imported successfully from data folder: 5063 annotations samples.
 Found OWL file in output folder. Importing.
@@ -65,7 +65,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 0.03453516960144043 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical-logits
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+Computing entity weights: Namespace(d_name='xtremespeech', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['multiNB']}
 xtremespeech imported successfully from data folder: 5063 annotations samples.
 Found OWL file in output folder. Importing.
@@ -98,7 +98,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 0.020905017852783203 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-hierarchical-multiNB
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+Computing entity weights: Namespace(d_name='xtremespeech', identities_pretraining='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['docf']}
 xtremespeech imported successfully from data folder: 5063 annotations samples.
 Found OWL file in output folder. Importing.
@@ -132,7 +132,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 0.003468036651611328 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-docf
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+Computing entity weights: Namespace(d_name='xtremespeech', identities_pretraining='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['logits']}
 xtremespeech imported successfully from data folder: 5063 annotations samples.
 Found OWL file in output folder. Importing.
@@ -165,7 +165,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 0.015214920043945312 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-logits
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='xtremespeech', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+Computing entity weights: Namespace(d_name='xtremespeech', identities_pretraining='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['multiNB']}
 xtremespeech imported successfully from data folder: 5063 annotations samples.
 Found OWL file in output folder. Importing.
@@ -199,7 +199,7 @@ Executed in 0.016570091247558594 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-multiNB
 (venv) (base) MCL293439:hate-speech-identities prl222$ bash notebooks/pretrain_kg.sh
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
@@ -216,7 +216,7 @@ gabhatecorpus imported successfully from data folder: 7813 annotations samples.
 Data collection: hatexplain
 hatexplain imported successfully from data folder: 12334 annotations samples.
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
@@ -250,7 +250,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 2.1639511585235596 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical-docf
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['logits']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
@@ -282,7 +282,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 5.528953790664673 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical-logits
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['multiNB']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
@@ -314,7 +314,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 3.018883228302002 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-hierarchical-multiNB
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['docf']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
@@ -347,7 +347,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 0.2020411491394043 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-none-docf
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='logits')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['logits']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
@@ -379,7 +379,7 @@ Computing and saving entity weights to get weighted KG ({IRI: weight}): weightin
 Executed in 1.0656249523162842 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-none-logits
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
+Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='none', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='multiNB')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['none'], 'weight_f': ['multiNB']}
 jigsaw imported successfully from data folder: 448000 annotations samples.
 Found OWL file in output folder. Importing.
