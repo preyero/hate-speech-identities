@@ -33,17 +33,6 @@ def get_metrics(y_trues: List[int],
 
 
 # Functions for error and entity analyses
-def find_elbow(y, s=3):
-    """  identify the elbow point of a line plot of y-values in descending order implementing the elbow method """
-    from kneed import KneeLocator
-
-    # Find the knee/elbow point using the KneeLocator
-    kl = KneeLocator(range(len(y)), y, curve='convex', direction='decreasing', S=s)
-    kl.plot_knee()
-    elbow_point = kl.knee
-
-    return elbow_point
-
 def draw_sample(d_subset, n, random_seed):
     """ Draw n sample with at least all available samples """
     n_subset = d_subset.shape[0]
@@ -88,3 +77,42 @@ def sample_true_partition(d, y_true_col, y_pred_col, id_col, sample_col, sample_
     d.loc[d[id_col].isin(sample_ids), sample_col] = 1
     return d
 
+
+def find_elbow(y, s=3):
+    """  identify the elbow point of a line plot of y-values in descending order implementing the elbow method """
+    from kneed import KneeLocator
+
+    # Find the knee/elbow point using the KneeLocator
+    kl = KneeLocator(range(len(y)), y, curve='convex', direction='decreasing', S=s)
+    kl.plot_knee()
+    elbow_point = kl.knee
+
+    return elbow_point
+
+
+def entities_in_categories(sample, categories, categories_col, id_col, model_name):
+    """ include all entities matched in error categories """
+    detect_ids = []
+    for category in categories:
+        detect_ids += sample.loc[sample[categories_col].str.contains(category), id_col].to_list()
+    category_sample = sample.loc[sample[id_col].isin(detect_ids)]
+    print(category_sample['dataset'].value_counts())
+    entities = [entity for pos_entities in category_sample[f'{model_name}_pos_matches'].dropna().to_list() for entity
+                in pos_entities.split(';')]
+    return entities
+
+
+def get_vocab_weights(pipeline):
+    """ return entity label : weight for all entities in vocabulary """
+    import numpy as np
+    from functions.kg.utils import get_kg_dict, load_owl
+    kg_dict = get_kg_dict(load_owl(pipeline['kwargs']['kg_path']))
+    feature_extractor = pipeline['feature_extractor']
+    vocab = np.array([kg_dict[iri][0] for iri in feature_extractor.vocab])
+    weights = feature_extractor.get_KG_feature_vectors(entities=[feature_extractor.vocab])[0]
+    # ... excluding encoding issues when exporting to excel
+    encoding, exclude = {'fiancé':'fianc√©'}, ['Â•π/Â¶≥ pronouns', 'Â•π/‰Ω† pronouns', '‰ªñ/‰Ω† pronouns']
+    weights_dict = {entity: round(weight, 2) for entity, weight in zip(vocab, weights)}
+    for k0, k_excel in encoding.items():
+        weights_dict[k_excel]=weights_dict[k0]
+    return weights_dict, exclude

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PROJ_DIR=$(pwd)
 ##############################
 ## 1. Transformers          ##
 ##############################
@@ -34,11 +35,11 @@ do
         # Hybrid: uni
         mkdir models/hybrid/gso_soft_H256_B8_D0.05/gsso_jigsaw_gendersexualorientation_0.5-stem-${i}-${j}
         python identity_group_identification.py \
-            --data_path ./models/measuring-hate-speech.csv \
-            --save_folder ./models \
+            --data_path "$PROJ_DIR"/models/measuring-hate-speech.csv \
+            --save_folder "$PROJ_DIR"/models \
             --model_type hybrid \
-            --kg_path ./models/adaptation/gsso.owl \
-            --weights_path ./models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-${i}-${j}. \
+            --kg_path "$PROJ_DIR"/models/adaptation/gsso.owl \
+            --weights_path "$PROJ_DIR"/models/adaptation/gsso_jigsaw_gendersexualorientation_0.5-stem-${i}-${j}. \
             --lr 2.5e-6 \
             --epsilon 1e-8 \
             --early_stopping_min_delta 0. \

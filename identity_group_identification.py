@@ -790,7 +790,7 @@ def order_join(entities, weights):
     return ';'.join(sorted_entities)
 
 
-def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_col: str):
+def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_col: str, id_col: str):
     # 0. Check required values
     if not all([k in pipeline.keys() for k in PIPELINE_KEYS]):
         raise Exception(f'Invalid pipeline for transformer or hybrid based '
@@ -808,10 +808,6 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
     # Hybrid-based models
     else:
         feature_extractor, model = pipeline['feature_extractor'], pipeline['model']
-        # ... custom id colum
-        id_col = 'custom_id'
-        data[id_col] = range(0, data.shape[0])
-        data[id_col] = data[id_col].apply(lambda id: str(id))
         # ... feature extraction
         entities = feature_extractor.get_entities_from_texts(df=data, text_col=text_col, id_col=id_col)
         kg_features = feature_extractor.get_KG_feature_vectors(entities=entities)
