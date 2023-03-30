@@ -1,1 +1,1 @@
-{"n_entities": 6653, "n_dense": 256, "dropout_rate": 0.05, "uni_output": true, "batch_size": 8, "labelling": "soft", "model_output": "target_gso"}
+{"n_entities": 6653, "n_dense": 256, "dropout_rate": 0.05, "uni_output": true}

@@ -44,13 +44,20 @@ def find_elbow(y, s=3):
 
     return elbow_point
 
+def draw_sample(d_subset, n, random_seed):
+    """ Draw n sample with at least all available samples """
+    n_subset = d_subset.shape[0]
+    n_available = n if n < n_subset else n_subset
+    print(f' adding {n_available} samples')
+    return d_subset.sample(n_available, random_state=random_seed).to_list()
+
 
 def sample_error_partition(d, y_true_col, y_pred_col, id_col, sample_col, sample_size: int, partition_range: float, random_seed=1):
-    """ Create binary column with random error samples from a partition with predicted probability """
+    """ Create binary column with random error samples from a 4-quartile partition with predicted probability """
     n = round(sample_size/4)
     sample_ids = []
     fn, fp = d.loc[(d[y_true_col] >= 0.5) & (d[y_pred_col] < 0.5)], d.loc[(d[y_true_col] < 0.5) & (d[y_pred_col] >= 0.5)]
-    pos_partition_proba, neg_partition_proba = 0.5+partition_range,0.5-partition_range
+    pos_partition_proba, neg_partition_proba = 0.5+partition_range, 0.5-partition_range
     # append FNs
     sample_ids = sample_ids + draw_sample(fn.loc[fn[y_pred_col] < neg_partition_proba, id_col], n, random_seed)
     sample_ids = sample_ids + draw_sample(fn.loc[fn[y_pred_col] >= neg_partition_proba, id_col], n, random_seed)
@@ -63,8 +70,9 @@ def sample_error_partition(d, y_true_col, y_pred_col, id_col, sample_col, sample
     return d
 
 
-# Partition proba is 0.75 and using tp (partition range 0.125).
 def sample_true_partition(d, y_true_col, y_pred_col, id_col, sample_col, sample_size: int, partition_range: float, random_seed=1):
+    """ Export true predictions sample:
+    e.g., 0.125 partition range: [0.5, 0.625), [0.625, 0.75), [0.75, 0.825), [0.825, 1.0] """
     n = round(sample_size/4)
     sample_ids = []
     high_tp, low_tp = d.loc[(d[y_true_col] >= 0.5) & (d[y_pred_col] >= 0.75)], d.loc[(d[y_true_col] >= 0.5) & (d[y_pred_col] >= 0.5) & (d[y_pred_col] < 0.75)]

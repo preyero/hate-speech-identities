@@ -27,6 +27,7 @@ import functions.kg.utils as kg_utils
 import functions.kg.indexing as kg_index
 import functions.kg.weighting as kg_weight
 import kg_adaptation as kg_adapt
+from functions.helper import load_dict, save_dict
 
 # Define relevant quantities
 SAVE_DIR = './models'
@@ -55,8 +56,25 @@ tf.config.experimental.enable_op_determinism()
 ##################
 # Lexical-based functions
 ##################
-# def toxic_debias_load
-# def toxic_debias_predict
+def toxic_debias_load(lexicon_path: str):
+    data = pd.read_csv(lexicon_path)
+    # keep demographic descriptors:
+    # offensive-not-minority          324
+    # offensive-minority-reference     53
+    # harmless-minority                26
+    data_identity = data.loc[data.categorization != 'offensive-not-minority']
+    # Filter gender and sexual orientation minorities
+    data_gso = data_identity.loc[data_identity['gender/sex/sex_orientation']!=0]
+    # offensive-minority-reference    33
+    # harmless-minority               14
+    return data_gso['word'].to_list()
+
+def toxic_debias_predict(lexicon: List, data: pd.DataFrame, text_col: str):
+    import regex as re
+    descRe = re.compile(r"\b"+r"\b|\b".join(lexicon)+"\b", re.IGNORECASE)
+    matches = data[text_col].apply(descRe.findall)
+    y_preds = matches.astype(bool)
+    return y_preds.values, [';'.join(match) for match in matches]
 
 ##################
 # Transformer functions
@@ -86,7 +104,8 @@ def load_mhs_dataset(save: bool = True):
         print(f'  imported from: {DATA_PATH}')
     return df
 
-# Plot cross-validation results and incidence rates from analysis dict
+
+# Plot cross-validation results and incidence rates from analysis dict (multi-output models)
 def plot_cv_from_analysis(analysis, export_name, x_labels=None):
     if x_labels is None:
         x_labels = sorted(keys.target_labels)
@@ -179,27 +198,22 @@ def plot_cv_from_analysis(analysis, export_name, x_labels=None):
     plt.savefig(f'{export_name}.pdf', bbox_inches='tight')
 
 
-def plot_cv_from_exp_files(exp_files: List[str], target_label: str, model_names: List[str], export_name: str):
+def plot_cv_from_exp_files(exp_files: List[str], identity_col: str, model_names: List[str], export_folder: str):
     # Retrieve analysis of target_label from experiment files
     analyses, idxs = [], []
     for exp_file in exp_files:
-        exp_name = exp_file.replace('.pkl', '')
-        save_name = exp_name.split('/')[-1]
-        soft = True if save_name.split('_')[-4] == 'soft' else False
+        kwargs = load_dict(exp_file.replace('exp_file.pkl', 'other_kwargs'))
+        soft = True if kwargs['labelling'] == 'soft' else False
         analysis = analyze_experiment(exp_file, soft=soft, verbose=True)
         analyses.append(analysis)
         # append index of prediction from target_label
-        if analysis['accuracy'].shape[1] == 1:
-            model_outputs = ['GSo']
+        model_outputs = kwargs['model_output'].split(',')
+        if identity_col in model_outputs:
+            idxs.append(model_outputs.index(identity_col))
         else:
-            model_outputs = sorted(keys.target_labels)
+            raise Exception(f'Invalid model identity output. Select from list {model_outputs}')
 
-        if target_label in model_outputs:
-            idxs.append(model_outputs.index(target_label))
-        else:
-            raise Exception(f'Invalid target label. Select from list {model_outputs}')
-
-    # Create analysis dict with target label prediction for all models: scores and incident rates
+    # Create analysis dict with identity col prediction for all models: scores and incident rates
     results = ['accuracy', 'chance', 'accuracy_by_chance', 'log_odds_difference', 'roc_aucs',
                'pr_aucs', 'f1_scores', 'precision', 'recall', 'incidence_rate']
     analysis = {k: [] for k in results}
@@ -212,10 +226,8 @@ def plot_cv_from_exp_files(exp_files: List[str], target_label: str, model_names:
                 analysis[k].append(full_analysis[k][idxs[i]])
     analysis = {k: np.array(v).T if k != 'incidence_rate' else np.array(v) for k, v in analysis.items()}
 
-    # export name something like '_'.join(model_names)+'.pdf' in the uni_output or multi_output folder.
-    # model_names = ['HybridDocF_h', 'HybridLogits_h', 'RoBERTa']
-    # export_name = './target_classification_models/'+'_'.join(model_names)+'.pdf'
-    plot_cv_from_analysis(analysis, export_name, x_labels=model_names)
+    export_file = os.path.join(export_folder, '_'.join(model_names))
+    plot_cv_from_analysis(analysis, export_file, x_labels=model_names)
     return
 
 
@@ -654,7 +666,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
     kwargs = {'n_dense': n_dense,
               'dropout_rate': dropout_rate,
               'uni_output': uni_output}
-    build_kwargs = {**model_kwargs, **kwargs}
+    model_kwargs = {**model_kwargs, **kwargs}
 
     # Export files to save_folder/model_type/<model-configuration>/<feature-extraction>
     export_folder = os.path.join(save_folder, model_type, f'{outputs_tag}_{save_name}', base_model_save_name)
@@ -691,7 +703,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         x=inputs,
         y=y_true,
         model_builder=model_builder,
-        model_kwargs=build_kwargs,
+        model_kwargs=model_kwargs,
         compile_kwargs=compile_kwargs,
         batch_size=batch_size,
         max_epochs=max_epochs,
@@ -706,10 +718,12 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         store_models=False,
         sample_weights=sample_weights)
 
-    # save feature extraction kwargs
-    fext_kwargs_file = os.path.join(export_folder, 'fext_kwargs.json')
-    with open(fext_kwargs_file, 'w') as fp:
-        json.dump(fext_kwargs, fp)
+    # save feature extraction and other kwargs
+    other_kwargs = {'batch_size': batch_size,
+                    'labelling': labelling,
+                    'model_output': ','.join(model_outputs)}
+    save_dict(other_kwargs, os.path.join(export_folder, 'other_kwargs'))
+    save_dict(fext_kwargs, os.path.join(export_folder, 'fext_kwargs'))
 
     exp_file = os.path.join(export_folder, 'exp_file.pkl')
     results = {
@@ -727,13 +741,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         pickle.dump(results, results_file)
 
     # save model kwargs
-    other_kwargs = {'batch_size': batch_size,
-                    'labelling': labelling,
-                    'model_output': ','.join(model_outputs)}
-    model_kwargs = {**build_kwargs, **other_kwargs}
-    model_kwargs_file = os.path.join(export_folder, 'model_kwargs.json')
-    with open(model_kwargs_file, 'w') as fp:
-        json.dump(model_kwargs, fp)
+    save_dict(model_kwargs, os.path.join(export_folder, 'model_kwargs'))
     model_file = os.path.join(export_folder, 'model.h5')
     if 'model_refit' in cv_results:
         # save weights
@@ -743,9 +751,8 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
 
 # Loads pipeline from experiment file.
 def model_load(model_folder: str):
-    model_type = model_folder.split('/')[-2]
-    with open(f'{model_folder}/model_kwargs.json', 'r') as fp:
-        model_kwargs = json.load(fp)
+    model_type = model_folder.split('/')[-3]
+    model_kwargs = load_dict(f'{model_folder}/model_kwargs')
     if model_type == 'llm':
         # Input function: tokenizer
         if model_kwargs['transformer'] == 'roberta-base' or model_kwargs['transformer'] == 'roberta-large':
@@ -761,15 +768,15 @@ def model_load(model_folder: str):
         pipeline = {'feature_extractor': tokenizer, 'model':model, 'kwargs': pipeline_kwargs}
     elif model_type == 'hybrid':
         # Input function: weighted kg embeddings
-        with open(f'{model_folder}/fext_kwargs.json', 'r') as fp:
-            fext_kwargs = json.load(fp)
+        fext_kwargs = load_dict(f'{model_folder}/fext_kwargs')
         feature_extractor = WeightedKGEmbeddings(fext_kwargs)
         # Model
         model = TargetIdentityClassifierHybrid.build_model(**model_kwargs)
         model.load_weights(model_folder + '/model.h5')
 
         # To predict: get_entities_from_texts to get [entities], then get_weighted_kg_embeddings to get [embeddings]
-        pipeline_kwargs = {**model_kwargs, **fext_kwargs}
+        other_kwargs = load_dict(f'{model_folder}/other_kwargs')
+        pipeline_kwargs = {**model_kwargs, **fext_kwargs, **other_kwargs}
         pipeline = {'feature_extractor': feature_extractor, 'model': model, 'kwargs': pipeline_kwargs}
     else:
         raise Exception(f'Invalid type of target identification model: {model_type}. Valid types: {MODEL_TYPES}')
@@ -777,8 +784,6 @@ def model_load(model_folder: str):
     return pipeline
 
 
-# TODO: as in linguistic markers (lexical-based con funciones aparte, que solo se usan en gso).
-#  LO hago mientras creo Notebook 2 con tablas.
 def order_join(entities, weights):
     """ Return sorted entities by descending weight separated by commas """
     sorted_entities = [x for _, x in sorted(zip(weights, entities), reverse=True)]
@@ -791,7 +796,7 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
         raise Exception(f'Invalid pipeline for transformer or hybrid based '
                         f'identity group identification models: {PIPELINE_KEYS}')
     # 1. Get predictions
-    model_outputs = pipeline['kwargs']['model_outputs'].split(',')
+    model_outputs = pipeline['kwargs']['model_output'].split(',')
     x = data[text_col].values
     # Transformer-based models
     if 'transformer' in pipeline['kwargs'].keys():
@@ -803,9 +808,15 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
     # Hybrid-based models
     else:
         feature_extractor, model = pipeline['feature_extractor'], pipeline['model']
+        # ... custom id colum
+        id_col = 'custom_id'
+        data[id_col] = range(0, data.shape[0])
+        data[id_col] = data[id_col].apply(lambda id: str(id))
+        # ... feature extraction
         entities = feature_extractor.get_entities_from_texts(df=data, text_col=text_col, id_col=id_col)
-        kg_features = feature_extractor.get_weighted_kg_embeddings(entities=entities)
+        kg_features = feature_extractor.get_KG_feature_vectors(entities=entities)
         inputs = [kg_features]
+        # ... classification
         outputs = model.predict(inputs, batch_size=pipeline['kwargs']['batch_size'], verbose=1)
     if type(outputs) != list:
         print(' uni output model predictions')
@@ -813,7 +824,7 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
 
     predict_idx = model_outputs.index(identity_col)
     y_trues, y_preds = data[identity_col].ravel(), outputs[predict_idx].ravel()
-    # 2. Get explanations
+    # 2. Get interpretations
     if 'feature_extractor' in locals():
         # ... list of features in descending order by their weight values.
         kg = kg_utils.load_owl(feature_extractor.fext_kwargs['kg_path'])
