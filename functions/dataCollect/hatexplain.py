@@ -72,7 +72,7 @@ def process_data(d_path: str, o_path: str = None, text_col: str = TEXT_COL, id_c
 
     # 2. Data selection: only community targeted in hateful samples > at least two annotators agree
     d = temp_read.loc[temp_read.final_label != to_discard]
-    print(f' {d.shape[0]} hateful samples with tareget annotations')
+    print(f' {d.shape[0]} hateful samples with identity annotations')
 
     # 3. Data aggregation (Mathew et al 2020): group label if at least two agreed (otherwise, none).
     d['final_target'] = d.apply(lambda row: generate_target_info(row['target1'], row['target2'], row['target3']), axis=1)

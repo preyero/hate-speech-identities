@@ -21,7 +21,7 @@ def process_data(d_path: str, o_path: str = None, text_col: str = TEXT_COL, id_c
 
     # only with group labels: 448k
     d = d.loc[d.identity_annotator_count != 0, ]
-    print(f'  excluded data without entity annotations. {d.shape[0]} samples.')
+    print(f'  excluded data without identity annotations. {d.shape[0]} samples.')
 
     # group label maximum probability (max subgroup of each group),
     # and list of subgroups with max probability, and
