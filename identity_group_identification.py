@@ -3,7 +3,6 @@ Target identification  for extending sota DL models based on PLMs (transformer)
 to pre-trained KG feature representations.
 """
 import os
-
 os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'  # CUDA mysteries of the machine
 import random
 import numpy as np
@@ -30,11 +29,12 @@ import kg_adaptation as kg_adapt
 from functions.helper import load_dict, save_dict
 
 # Define relevant quantities
-SAVE_DIR = './models'
+PROJ_DIR = os.getcwd()
+SAVE_DIR = f'{PROJ_DIR}/models'
 DATA_PATH = f'{SAVE_DIR}/measuring-hate-speech.csv'
 MODEL_TYPES = ['llm', 'hybrid']
 TRANSFORMER_NAMES = ['roberta-base', 'roberta-large']
-KG_PATH = './models/adaptation/gsso.owl'
+KG_PATH = f'{PROJ_DIR}/models/adaptation/gsso.owl'
 FEXT_KWARGS_KEYS = ['kg_path', 'kg_name', 'weights_folder', 'identity_pretraining', 'd_pretrain', 'thr', 'match_method',
                     'infer_method', 'weight_f']
 WEIGHTING_SAMPLES = ['none', 'unit', 'sqrt', 'log']
@@ -312,7 +312,6 @@ def get_entities(df: pd.DataFrame,
                  match_method: str,
                  weights_root: str = None,
                  weight_f: str = None,
-                 checkpoint_root: str = None,
                  verbose: bool = True) -> pd.DataFrame:
     """ Get list of entities found in texts :
     :return np.ndarray with KG entity lists in texts
@@ -325,33 +324,23 @@ def get_entities(df: pd.DataFrame,
     inv_index = kg_index.indexing_df(df, text_col, id_col, match_method)
     # Load KG from path
     kg = kg_utils.load_owl(kg_path)
-
     terminology_df = pd.DataFrame()
-    check_asserted = f'{checkpoint_root}.pkl'
     # Entities asserted are the same until the weighting f part (checkroot: thr,sample level, match, infer)
-    if not os.path.exists(check_asserted):
-        if verbose:
-            print('  matching entities')
-        # Create KG dicts for entity matching ({entity: [label, synonym, etc]})
-        kg_dict = kg_utils.get_kg_dict(kg)
-
-        if weight_f:
-            if weights_root:
-                weights_dict = load_weights_from_root(weights_root, weight_f)
-            if weight_f in kg_adapt.WEIGHT_BY_SCORE:
-                # Filter only the ones in the weights vector of entity scores
-                kg_dict = {c_iri: syn for c_iri, syn in kg_dict.items() if c_iri in weights_dict.keys()}
-            elif weight_f in kg_adapt.WEIGHT_BY_MODEL:
-                # Filter only the ones in model features seen during training
-                kg_dict = {c_iri: syn for c_iri, syn in kg_dict.items()
-                           if c_iri in weights_dict['vectorizer'].vocabulary_}
-        terminology_df['ent_assert'] = kg_utils.get_entity_matches(df, inv_index, text_col, id_col, kg_dict, match_method)
-        if checkpoint_root is not None:
-            terminology_df['ent_assert'].to_pickle(check_asserted)
-            print('  checkpoint to: {}'.format(check_asserted))
-    else:
-        print('  found checkpoint of matched entities. Importing from: {}'.format(check_asserted))
-        terminology_df['ent_assert'] = pd.read_pickle(check_asserted)
+    if verbose:
+        print('  matching entities')
+    # Create KG dicts for entity matching ({entity: [label, synonym, etc]})
+    kg_dict = kg_utils.get_kg_dict(kg)
+    if weight_f:
+        if weights_root:
+            weights_dict = load_weights_from_root(weights_root, weight_f)
+        if weight_f in kg_adapt.WEIGHT_BY_SCORE:
+            # Filter only the ones in the weights vector of entity scores
+            kg_dict = {c_iri: syn for c_iri, syn in kg_dict.items() if c_iri in weights_dict.keys()}
+        elif weight_f in kg_adapt.WEIGHT_BY_MODEL:
+            # Filter only the ones in model features seen during training
+            kg_dict = {c_iri: syn for c_iri, syn in kg_dict.items()
+                       if c_iri in weights_dict['vectorizer'].vocabulary_}
+    terminology_df['ent_assert'] = kg_utils.get_entity_matches(df, inv_index, text_col, id_col, kg_dict, match_method)
     return terminology_df['ent_assert'].values
 
 
@@ -360,7 +349,6 @@ def get_weights(entities: np.ndarray,
                 weights_root: str = None,
                 infer_method: str = None,
                 weight_f: str = None,
-                checkpoint_root: str = None,
                 verbose: bool = True) -> pd.DataFrame:
     """ Terminology dictionary from text entities with:
     -- entities asserted in the text (from whole KG or in weights vect)
@@ -369,7 +357,6 @@ def get_weights(entities: np.ndarray,
     """
     # Load KG from path
     kg = kg_utils.load_owl(kg_path)
-
     terminology_df = pd.DataFrame.from_dict({'ent_assert': entities})
     kg_dict = kg_utils.get_kg_dict(kg)
     if verbose:
@@ -379,32 +366,23 @@ def get_weights(entities: np.ndarray,
         # Load weights if path given
         if weights_root:
             weights_dict = load_weights_from_root(weights_root, weight_f)
-        check_wterminology = f'{checkpoint_root}-{weight_f}.pkl'
-        if not os.path.exists(check_wterminology):
-            if infer_method:
-                terminology_df[['g_label', 'terminology']] = \
-                    terminology_df['ent_assert'].apply(
-                        lambda ent_assert: __apply_entity_weights(ent_assert=ent_assert,
-                                                                  kg=kg,
-                                                                  kg_dict=kg_dict,
-                                                                  weights_dict=weights_dict,
-                                                                  infer_method=infer_method,
-                                                                  weight_f=weight_f)
-                    )
-                if checkpoint_root is not None:
-                    terminology_df[['g_label', 'terminology']].to_pickle(check_wterminology)
-                    print('  checkpoint to: {}'.format(check_wterminology))
-            else:
-                raise Exception("Required infer method to weight entities")
+        if infer_method:
+            terminology_df[['g_label', 'terminology']] = \
+                terminology_df['ent_assert'].apply(
+                    lambda ent_assert: __apply_entity_weights(ent_assert=ent_assert,
+                                                              kg=kg,
+                                                              kg_dict=kg_dict,
+                                                              weights_dict=weights_dict,
+                                                              infer_method=infer_method,
+                                                              weight_f=weight_f)
+                )
         else:
-            print('  found checkpoint of weighted entities. Importing from: {}'.format(check_wterminology))
-            terminology_df[['g_label', 'terminology']] = pd.read_pickle(check_wterminology)
+            raise Exception("Required infer method to weight entities")
     else:
         terminology_df[['g_label', 'terminology']] = \
             terminology_df['ent_assert'].apply(
                 lambda ent_assert: __apply_entity_weights(ent_assert=ent_assert, kg=kg, kg_dict=kg_dict)
             )
-
     return terminology_df[['g_label', 'terminology']]
 
 
@@ -753,6 +731,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
 def model_load(model_folder: str):
     model_type = model_folder.split('/')[-3]
     model_kwargs = load_dict(f'{model_folder}/model_kwargs')
+    other_kwargs = load_dict(f'{model_folder}/other_kwargs')
     if model_type == 'llm':
         # Input function: tokenizer
         if model_kwargs['transformer'] == 'roberta-base' or model_kwargs['transformer'] == 'roberta-large':
@@ -764,7 +743,7 @@ def model_load(model_folder: str):
         model.load_weights(model_folder + '/model.h5')
 
         # To predict: tokenizer(texts, return_tensors='np', padding=True) to get [input_ids, attention mask]
-        pipeline_kwargs = model_kwargs
+        pipeline_kwargs = {**model_kwargs, **other_kwargs}
         pipeline = {'feature_extractor': tokenizer, 'model':model, 'kwargs': pipeline_kwargs}
     elif model_type == 'hybrid':
         # Input function: weighted kg embeddings
@@ -775,7 +754,6 @@ def model_load(model_folder: str):
         model.load_weights(model_folder + '/model.h5')
 
         # To predict: get_entities_from_texts to get [entities], then get_weighted_kg_embeddings to get [embeddings]
-        other_kwargs = load_dict(f'{model_folder}/other_kwargs')
         pipeline_kwargs = {**model_kwargs, **fext_kwargs, **other_kwargs}
         pipeline = {'feature_extractor': feature_extractor, 'model': model, 'kwargs': pipeline_kwargs}
     else:

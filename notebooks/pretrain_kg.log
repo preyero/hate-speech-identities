@@ -197,24 +197,6 @@ Executed in 0.01174783706665039 seconds.
 Computing and saving entity weights to get weighted KG ({IRI: weight}): weighting f=multiNB
 Executed in 0.016570091247558594 seconds.
  Success exporting entity weights to: ././models/adaptation/gsso_xtremespeech_gendersexualorientation_0.5-stem-none-multiNB
-(venv) (base) MCL293439:hate-speech-identities prl222$ bash notebooks/pretrain_kg.sh
-* Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
-Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
- Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}
-jigsaw imported successfully from data folder: 448000 annotations samples.
-Found OWL file in output folder. Importing.
-Sampling distribution with thr=0.5 for gendersexualorientation
-^Z
-[5]+  Stopped                 bash notebooks/pretrain_kg.sh
-(venv) (base) MCL293439:hate-speech-identities prl222$ bash notebooks/pretrain_kg.sh
-Data collection: jigsaw
-jigsaw imported successfully from data folder: 448000 annotations samples.
-Data collection: xtremespeech
-xtremespeech imported successfully from data folder: 5063 annotations samples.
-Data collection: gabhatecorpus
-gabhatecorpus imported successfully from data folder: 7813 annotations samples.
-Data collection: hatexplain
-hatexplain imported successfully from data folder: 12334 annotations samples.
 * Owlready2 * Warning: optimized Cython parser module 'owlready2_optimized' is not available, defaulting to slower Python implementation
 Computing entity weights: Namespace(d_name='jigsaw', identities_pretraining='gender,sexual_orientation', infer_method='hierarchical', knowledge_graph_path='/Users/prl222/language_resources/GSSO-master/gsso.owl', match_method='stem', thr='0.5', weight_f='docf')
  Optional args: {'thr': 0.5, 'match_method': 'stem', 'infer_method': ['hierarchical'], 'weight_f': ['docf']}

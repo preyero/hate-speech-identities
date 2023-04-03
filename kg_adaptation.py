@@ -24,16 +24,17 @@ WEIGHT_BY_MODEL = kg_weight.WEIGHT_BY_MODEL
 WEIGHT_FS = kg_weight.WEIGHT_FS
 
 DNAMES = dc.DNAMES
-OUTPUT_FOLDER = './models/adaptation'
-CHECKPOINTS_FOLDER = './models/adaptation/checkpoints'
-DATA_FOLDER = './data'
+PROJ_DIR = os.getcwd()
+OUTPUT_FOLDER = f'{PROJ_DIR}/models/adaptation'
+CHECKPOINTS_FOLDER = f'{PROJ_DIR}/models/adaptation/checkpoints'
+DATA_FOLDER = f'{PROJ_DIR}/data'
 
 
 def collect_owl_from_path(kg_path: str,
                           output_folder: str = OUTPUT_FOLDER) -> owlready2.namespace.Ontology:
     """ Load saved version of ontology from local repository or import from owl path and save a copy """
     fname = kg_path.split('/')[-1]
-    o_path = f'./{output_folder}/{fname}'
+    o_path = f'{output_folder}/{fname}'
     if os.path.exists(o_path):
         kg = kg_utils.load_owl(o_path)
         print('Found OWL file in output folder. Importing.')
@@ -167,7 +168,7 @@ def adaptation_subset(d: pd.DataFrame,
     # Save pre-training corpus as CSV in data folder
     if data_folder:
         export_name = '{}_{}_{}'.format(dname, thr, y_col)
-        o_path = f'./{data_folder}/{export_name}.csv'
+        o_path = f'{data_folder}/{export_name}.csv'
         df_train.to_csv(o_path, index=False)
         print(f'  Pre-training corpus exported to {data_folder}: {export_name}')
 
@@ -323,7 +324,7 @@ def kg_adaptation(dname: str,
             t0 = time.time()
             # ... get the path to output weights
             method_name = '-'.join([str(config["thr"]), config["match_method"], infer_method, weight_f])
-            o_path = f'./{OUTPUT_FOLDER}/{kg_name}_{dname}_{y_col}_{method_name}'
+            o_path = f'{OUTPUT_FOLDER}/{kg_name}_{dname}_{y_col}_{method_name}'
 
             __compute_weights(d_train,
                               'entity_matches',

@@ -20,32 +20,34 @@ Python 3.8.2 and install requirements.txt (generated using `pip freeze` command)
     $ python3 -m venv ./<env_name>
     $ source <env_name>/bin/activate
     (<env_name>) $ python -m pip install -r requirements.txt
+    # Inside virtual environment to run notebooks
+    (<env_name>) $ jupyter notebook
 ```
 
 #### Docker
 ```commandline
-# Build docker image
-$ docker build . -t <docker-image>:tag
+    # Build docker image
+    $ docker build . -t <docker-image>:tag
 
-# Run interactive docker container
-$ docker run -it --name <docker-container>:tag -v `pwd`:/app <docker-image>:tag
-# ... with port to open jupyter notebooks
-$ docker run -it -p 8888:8888 --name <docker-container>:tag -v `pwd`:/app <docker-image>:tag
+    # Run interactive docker container
+    $ docker run -it --name <docker-container>:tag -v `pwd`:/app <docker-image>:tag
+    # ... with port to open jupyter notebooks
+    $ docker run -it -p 8888:8888 --name <docker-container>:tag -v `pwd`:/app <docker-image>:tag
 
-# Inside the container to run notebooks
-$ jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
-# ... or from command line with nbconvert
-$ jupyter nbconvert --to notebook --execute my_notebook.ipynb --output=result.ipynb
+    # Inside the container to run notebooks
+    $ jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
+    # ... or from command line with nbconvert
+    $ jupyter nbconvert --to notebook --execute my_notebook.ipynb --output=result.ipynb
 ```
 #### Optional (To train Transformer models on GPU)
 
-Follow instructions to install TF with GPU-enabled using [Docker](https://www.tensorflow.org/install/docker) or a [Virtual Environment](https://www.tensorflow.org/install/pip) if applicable.
+Follow instructions to install TF with GPU-enabled using a [Virtual Environment](https://www.tensorflow.org/install/pip) if applicable. Ensure to install requirements after setting up the virtual environment as indicated above. To use a specific GPU, adjust `CUDA_VISIBLE_DEVICES` in identity_group_identification script.
 
 ## Paper experiments
 
 All results from the paper are in `notebooks` folder. 
 
-We provide two bash scripts to reproduce all models (`hate-speech-identities <username>$ bash notebooks/<script-name>.sh`), including the export of Jigsaw Sample (jigsaw_0.5_gendersexualorientation.csv). Please contact us if you would prefer us to share it directly. 
+We provide two bash scripts to reproduce all models (`hate-speech-identities <username>$ bash notebooks/<script-name>.sh &> notebooks/<script-name>.log`), including the export of Jigsaw Sample (jigsaw_0.5_gendersexualorientation.csv). Please contact us if you would prefer us to share it directly. 
 
 All outputs are shown in the following Jupyter notebooks:
 - *1_data_statistics.ipynb*: statistics for the datasets used in the paper (Table 1).
