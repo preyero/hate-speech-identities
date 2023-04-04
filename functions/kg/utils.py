@@ -21,16 +21,13 @@ def get_kg_dict(kg, lang='en'):
                    k.hasBroadSynonym + k.hasNarrowSynonym + k.hasRelatedSynonym + k.replaces + k.isReplacedBy
                    for k in kg.individuals()}
     kg_dict = {**kg_cls_dict, **kg_ind_dict}
-
     # Filter only synonyms in English
     def filter_by_lang(syns, lang):
         return [syn for syn in syns if type(syn) == owlready2.util.locstr and syn.lang == lang]
-
     kg_dict_en = {}
     for c_iri, syns in kg_dict.items():
         syns_en = filter_by_lang(syns, lang)
         kg_dict_en[c_iri] = syns_en if len(syns_en) != 0 else syns
-
     return kg_dict_en
 
 

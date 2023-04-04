@@ -53,6 +53,24 @@ os.environ['PYTHONHASHSEED'] = str(seed)
 tf.keras.utils.set_random_seed(1)
 tf.config.experimental.enable_op_determinism()
 
+
+def select_device(device_id:str = "1", device_type: str = 'GPU'):
+    os.environ["CUDA_VISIBLE_DEVICES"] = f"{device_id}"
+    devices = tf.config.experimental.list_physical_devices(device_type)
+    print('Number of {} available: {}'.format(device_type, len(devices)))
+    if device_type == 'GPU':
+        [tf.config.experimental.set_memory_growth(dev, True) for dev in devices]
+    else:
+        tf.config.experimental.set_visible_devices([], 'GPU')
+    # Request specific GPU: Data Card 1:
+    devices = [x for x in devices if x.name == f'/physical_device:{device_type}:{device_id}']
+    if len(devices) > 0:
+        dev = devices[0]
+        tf.config.experimental.set_visible_devices(dev, device_type)
+        print(f'Set visible {dev}')
+    return
+
+
 ##################
 # Lexical-based functions
 ##################
@@ -69,12 +87,14 @@ def toxic_debias_load(lexicon_path: str):
     # harmless-minority               14
     return data_gso['word'].to_list()
 
+
 def toxic_debias_predict(lexicon: List, data: pd.DataFrame, text_col: str):
     import regex as re
     descRe = re.compile(r"\b"+r"\b|\b".join(lexicon)+"\b", re.IGNORECASE)
     matches = data[text_col].apply(descRe.findall)
     y_preds = matches.astype(bool)
     return y_preds.values, [';'.join(match) for match in matches]
+
 
 ##################
 # Transformer functions
@@ -324,12 +344,11 @@ def get_entities(df: pd.DataFrame,
     inv_index = kg_index.indexing_df(df, text_col, id_col, match_method)
     # Load KG from path
     kg = kg_utils.load_owl(kg_path)
-    terminology_df = pd.DataFrame()
-    # Entities asserted are the same until the weighting f part (checkroot: thr,sample level, match, infer)
-    if verbose:
-        print('  matching entities')
     # Create KG dicts for entity matching ({entity: [label, synonym, etc]})
     kg_dict = kg_utils.get_kg_dict(kg)
+    terminology_df = pd.DataFrame()
+    if verbose:
+        print('  matching entities')
     if weight_f:
         if weights_root:
             weights_dict = load_weights_from_root(weights_root, weight_f)
@@ -357,8 +376,8 @@ def get_weights(entities: np.ndarray,
     """
     # Load KG from path
     kg = kg_utils.load_owl(kg_path)
-    terminology_df = pd.DataFrame.from_dict({'ent_assert': entities})
     kg_dict = kg_utils.get_kg_dict(kg)
+    terminology_df = pd.DataFrame.from_dict({'ent_assert': entities})
     if verbose:
         print('  getting terminology dict and group labels')
     # Weighted terminology columns have checkpoint if using a weights vector
@@ -543,7 +562,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
                                 model_name: str = None, pooling: str = 'mean', mask_pool: bool = False,
                                 fext_kwargs: Dict = None, n_dense: int = 256, dropout_rate: float = 0.05,
                                 batch_size: int = 8, max_epochs: int = 10, n_folds: int = 5, val_frac: float = 0.15,
-                                uni_output: bool = False, identity_training: str = 'target_gso'):
+                                uni_output: bool = True, identity_training: str = 'target_gso'):
     # Check required input arguments
     if model_type == 'llm':
         if not model_name:
@@ -557,7 +576,6 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         print(f'Starting target prediction model training using weighted KG embeddings.')
     else:
         raise Exception(f'Invalid model type. Select from list: {MODEL_TYPES}')
-
     # Train multi-output or uni-output models
     if uni_output:
         # Uni_output could be the column to use as y
@@ -570,19 +588,16 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         model_outputs = MULTI_MODEL_OUTPUTS
     print(f'  model outputs: {model_outputs}')
     outputs_tag = ''.join([group.split('_')[1] for group in model_outputs])
-
     # Read in data
     if data_path == DATA_PATH:
         data = load_mhs_dataset()
     else:
         data = pd.read_csv(data_path)
-
     comments = data[[id_col, text_col]].drop_duplicates().sort_values(id_col)
     # Determine target identities
     agreement = data[[id_col] + model_outputs].groupby(id_col).agg('mean')
     agreement = agreement[model_outputs]
     is_target = (agreement >= threshold).astype('int').reset_index(level=0).merge(right=comments, how='left')
-
     # Extract data for training models
     x = is_target[text_col].values
     identities = is_target[model_outputs]
@@ -637,15 +652,12 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         kg_features = feature_extractor.get_KG_feature_vectors(entities=entities)
         inputs = [kg_features]
         model_builder = TargetIdentityClassifierHybrid.build_model
-        model_kwargs = {
-            'n_entities': len(feature_extractor.vocab),
-        }
+        model_kwargs = {'n_entities': len(feature_extractor.vocab)}
         base_model_save_name = fext_kwargs['weights_root'].split('/')[-1]
     kwargs = {'n_dense': n_dense,
               'dropout_rate': dropout_rate,
               'uni_output': uni_output}
     model_kwargs = {**model_kwargs, **kwargs}
-
     # Export files to save_folder/model_type/<model-configuration>/<feature-extraction>
     export_folder = os.path.join(save_folder, model_type, f'{outputs_tag}_{save_name}', base_model_save_name)
     if not os.path.isdir(save_folder):
@@ -656,25 +668,15 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         os.mkdir(os.path.join(save_folder, model_type, f'{outputs_tag}_{save_name}'))
     if not os.path.isdir(export_folder):
         os.mkdir(export_folder)
-
+    # Select GPU device and memory growth
+    select_device(device_id="1", device_type='GPU')
     # Run cross-validation
-    os.environ["CUDA_VISIBLE_DEVICES"] = "1"
     try:
         from tensorflow.keras.optimizers.legacy import Adam
         print('imported legacy optimizer')
     except ModuleNotFoundError:
         # No legacy on cpu: ModuleNotFoundError: No module named 'tensorflow.keras.optimizers.legacy'
         from tensorflow.keras.optimizers import Adam
-    # Limit GPU memory usage
-    gpus = tf.config.experimental.list_physical_devices('GPU')
-    print('Number of GPU available: {}'.format(len(gpus)))
-    [tf.config.experimental.set_memory_growth(gpu, True) for gpu in gpus]
-    # Request specific GPU: Data Card 1:
-    gpus = [x for x in gpus if x.name == '/physical_device:GPU:1']
-    if len(gpus) > 0:
-        gpu = gpus[0]
-        tf.config.experimental.set_visible_devices(gpu, 'GPU')
-        print(f'Set visible {gpu}')
     compile_kwargs = {'optimizer': Adam(learning_rate=learning_rate, epsilon=epsilon),
                       'loss': 'binary_crossentropy'}
     cv_results = cv_wrapper(
@@ -695,14 +697,12 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         unwrap_predictions=True,
         store_models=False,
         sample_weights=sample_weights)
-
     # save feature extraction and other kwargs
     other_kwargs = {'batch_size': batch_size,
                     'labelling': labelling,
                     'model_output': ','.join(model_outputs)}
     save_dict(other_kwargs, os.path.join(export_folder, 'other_kwargs'))
     save_dict(fext_kwargs, os.path.join(export_folder, 'fext_kwargs'))
-
     exp_file = os.path.join(export_folder, 'exp_file.pkl')
     results = {
         'x': x,
@@ -717,7 +717,6 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
     }
     with open(exp_file, 'wb') as results_file:
         pickle.dump(results, results_file)
-
     # save model kwargs
     save_dict(model_kwargs, os.path.join(export_folder, 'model_kwargs'))
     model_file = os.path.join(export_folder, 'model.h5')
@@ -748,7 +747,7 @@ def model_load(model_folder: str):
     elif model_type == 'hybrid':
         # Input function: weighted kg embeddings
         fext_kwargs = load_dict(f'{model_folder}/fext_kwargs')
-        feature_extractor = WeightedKGEmbeddings(fext_kwargs)
+        feature_extractor = WeightedKGEmbeddings(fext_kwargs=fext_kwargs)
         # Model
         model = TargetIdentityClassifierHybrid.build_model(**model_kwargs)
         model.load_weights(model_folder + '/model.h5')
@@ -776,13 +775,13 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
     # 1. Get predictions
     model_outputs = pipeline['kwargs']['model_output'].split(',')
     x = data[text_col].values
+    print(f'Starting predictions on: {model_outputs}')
     # Transformer-based models
     if 'transformer' in pipeline['kwargs'].keys():
         tokenizer, model = pipeline['feature_extractor'], pipeline['model']
         tokens = tokenizer(x.tolist(), return_tensors='np', max_length=pipeline['kwargs']['max_length'],
                            truncation=True, padding='max_length')
         inputs = [tokens['input_ids'], tokens['attention_mask']]
-        outputs = model.predict(inputs, batch_size=pipeline['kwargs']['batch_size'], verbose=1)
     # Hybrid-based models
     else:
         feature_extractor, model = pipeline['feature_extractor'], pipeline['model']
@@ -790,12 +789,13 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
         entities = feature_extractor.get_entities_from_texts(df=data, text_col=text_col, id_col=id_col)
         kg_features = feature_extractor.get_KG_feature_vectors(entities=entities)
         inputs = [kg_features]
-        # ... classification
-        outputs = model.predict(inputs, batch_size=pipeline['kwargs']['batch_size'], verbose=1)
+    print('... feature extraction')
+    # ... classification
+    outputs = model.predict(inputs, batch_size=pipeline['kwargs']['batch_size'], verbose=1)
+    print('... classification')
     if type(outputs) != list:
-        print(' uni output model predictions')
+        print('   uni-output model')
         outputs = [outputs]
-
     predict_idx = model_outputs.index(identity_col)
     y_trues, y_preds = data[identity_col].ravel(), outputs[predict_idx].ravel()
     # 2. Get interpretations
@@ -825,6 +825,22 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
     else:
         interpretations = None
     return y_trues, y_preds, interpretations
+
+
+def get_vocab_weights(pipeline):
+    """ return entity label : weight for all entities in vocabulary """
+    import numpy as np
+    from functions.kg.utils import get_kg_dict, load_owl
+    kg_dict = get_kg_dict(load_owl(pipeline['kwargs']['kg_path']))
+    feature_extractor = pipeline['feature_extractor']
+    vocab = np.array([kg_dict[iri][0] for iri in feature_extractor.vocab])
+    weights = feature_extractor.get_KG_feature_vectors(entities=[feature_extractor.vocab])[0]
+    # ... excluding encoding issues when exporting to excel
+    encoding, exclude = {'fiancé':'fianc√©'}, ['Â•π/Â¶≥ pronouns', 'Â•π/‰Ω† pronouns', '‰ªñ/‰Ω† pronouns']
+    weights_dict = {entity: round(weight, 2) for entity, weight in zip(vocab, weights)}
+    for k0, k_excel in encoding.items():
+        weights_dict[k_excel]=weights_dict[k0]
+    return weights_dict, exclude
 
 
 def main():

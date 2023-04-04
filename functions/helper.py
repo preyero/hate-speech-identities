@@ -100,19 +100,3 @@ def entities_in_categories(sample, categories, categories_col, id_col, model_nam
     entities = [entity for pos_entities in category_sample[f'{model_name}_pos_matches'].dropna().to_list() for entity
                 in pos_entities.split(';')]
     return entities
-
-
-def get_vocab_weights(pipeline):
-    """ return entity label : weight for all entities in vocabulary """
-    import numpy as np
-    from functions.kg.utils import get_kg_dict, load_owl
-    kg_dict = get_kg_dict(load_owl(pipeline['kwargs']['kg_path']))
-    feature_extractor = pipeline['feature_extractor']
-    vocab = np.array([kg_dict[iri][0] for iri in feature_extractor.vocab])
-    weights = feature_extractor.get_KG_feature_vectors(entities=[feature_extractor.vocab])[0]
-    # ... excluding encoding issues when exporting to excel
-    encoding, exclude = {'fiancé':'fianc√©'}, ['Â•π/Â¶≥ pronouns', 'Â•π/‰Ω† pronouns', '‰ªñ/‰Ω† pronouns']
-    weights_dict = {entity: round(weight, 2) for entity, weight in zip(vocab, weights)}
-    for k0, k_excel in encoding.items():
-        weights_dict[k_excel]=weights_dict[k0]
-    return weights_dict, exclude
