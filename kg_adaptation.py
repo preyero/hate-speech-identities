@@ -40,6 +40,8 @@ def collect_owl_from_path(kg_path: str,
         print('Found OWL file in output folder. Importing.')
     else:
         kg = kg_utils.load_owl(kg_path)
+        if not os.path.exists(output_folder):
+            os.mkdir(output_folder)
         kg.save(file=o_path)
         print(f'OWL collected from {kg_path} and saved in output folder.')
     return kg
@@ -295,6 +297,8 @@ def kg_adaptation(dname: str,
 
     # Entity matching: identify entities asserted and inferred in text using KG
     check_root = f'{CHECKPOINTS_FOLDER}/{kg_name}_{dname}_{y_col}_{config["thr"]}-{config["match_method"]}'
+    if not os.path.exists(CHECKPOINTS_FOLDER):
+        os.mkdir(CHECKPOINTS_FOLDER)
     # Method 3: how to create index to do the entity matching
     t0 = time.time()
     # ... create custom index col (not required for creating entity weights)
