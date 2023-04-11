@@ -14,13 +14,14 @@ There are three main files:
 
 ## Requirements
 
-#### Virtual Environment
+#### Conda Environment
 Python 3.8.2 and install requirements.txt (generated using `pip freeze` command).
 ```commandline
-    $ python3 -m venv ./<env_name>
-    $ source <env_name>/bin/activate
+    $ conda create --name <env_name> python=3.8.2
+    $ conda activate <env_name>
     (<env_name>) $ python -m pip install -r requirements.txt
-    # Inside virtual environment to run notebooks
+    # Inside virtual environment to run notebooks with this conda environment
+    (<env_name>) $ python -m ipykernel install --user --name=<env_name>
     (<env_name>) $ jupyter notebook
 ```
 
