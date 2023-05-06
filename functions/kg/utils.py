@@ -85,4 +85,17 @@ def get_hierarchical_info(c_iri: owlready2.entity, kg: owlready2.namespace.Ontol
     ent_infer += [k[0].iri for k in r if k[0].label]
     return ent_infer
 
+def get_definition(c_iri: owlready2.entity, kg: owlready2.namespace.Ontology):
+    c = kg.search_one(iri=c_iri)
+    try:
+        r = list(default_world.sparql("""
+                SELECT ?y
+                {   ?? obo:IAO_0000115 ?y
+                }
+                """, [c]))
+    except ValueError:
+        #print(c_iri)
+        r = []
+    definition = r[0][0] if len(r)>0 else []
+    return definition
 

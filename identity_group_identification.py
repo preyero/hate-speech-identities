@@ -29,12 +29,11 @@ import kg_adaptation as kg_adapt
 from functions.helper import load_dict, save_dict
 
 # Define relevant quantities
-PROJ_DIR = os.getcwd()
-SAVE_DIR = f'{PROJ_DIR}/models'
+SAVE_DIR = 'models'
 DATA_PATH = f'{SAVE_DIR}/measuring-hate-speech.csv'
 MODEL_TYPES = ['llm', 'hybrid']
 TRANSFORMER_NAMES = ['roberta-base', 'roberta-large']
-KG_PATH = f'{PROJ_DIR}/models/adaptation/gsso.owl'
+KG_PATH = 'models/adaptation/gsso.owl'
 FEXT_KWARGS_KEYS = ['kg_path', 'kg_name', 'weights_folder', 'identity_pretraining', 'd_pretrain', 'thr', 'match_method',
                     'infer_method', 'weight_f']
 WEIGHTING_SAMPLES = ['none', 'unit', 'sqrt', 'log']
@@ -99,10 +98,10 @@ def toxic_debias_predict(lexicon: List, data: pd.DataFrame, text_col: str):
 ##################
 # Transformer functions
 ##################
-def load_mhs_dataset(save: bool = True):
+def load_mhs_dataset(path: str = DATA_PATH, save: bool = True):
     """ Load dataset from huggingface and prepare for training target identification model.
     Export to data_path"""
-    if not os.path.exists(DATA_PATH):
+    if not os.path.exists(path):
         print('  importing from huggingface server')
         import datasets
         dataset = datasets.load_dataset('ucberkeley-dlab/measuring-hate-speech', 'binary')
@@ -112,16 +111,24 @@ def load_mhs_dataset(save: bool = True):
         from baselines.target_classification.hate_target.utils import preprocess
         df.insert(15, 'predict_text', df['text'].apply(lambda x: preprocess(x)))
 
-        print('  adding gso column from max(gender, sexuality) annotations.')
+        # Including common columns with Jigsaw pre-training corpus
+        print('  adding group columns: gso from max(gender, sexuality) annotations.')
         gso_cols = ['target_gender', 'target_sexuality']
         df.insert(61, 'target_gso', df.apply(lambda row: max([row[gso_col] for gso_col in gso_cols]), axis=1))
 
-        print(f'  exported to: {DATA_PATH}')
+        print('  adding subgroup columns: transgender(trans_men/women/unspecified), othergender(non_binary/other), homosexual(gay/lesbian)')
+        subgroups_cols = {'target_gender_transgender': ['target_gender_transgender_men', 'target_gender_transgender_women', 'target_gender_transgender_unspecified'], 
+                          'target_gender_othergender': ['target_gender_non_binary', 'target_gender_other'], 
+                          'target_sexuality_homosexual': ['target_sexuality_gay', 'target_sexuality_lesbian']}
+        for subg, subg_cols in subgroups_cols.items():
+            df[subg] = df.apply(lambda row: max([row[subg_col] for subg_col in subg_cols]), axis=1)
+
         if save:
-            df.to_csv(DATA_PATH, index=False)
+            print(f'  exported to: {path}')
+            df.to_csv(path, index=False)
     else:
-        df = pd.read_csv(DATA_PATH)
-        print(f'  imported from: {DATA_PATH}')
+        print(f'  imported from: {path}')
+        df = pd.read_csv(path)
     return df
 
 
@@ -218,6 +225,7 @@ def plot_cv_from_analysis(analysis, export_name, x_labels=None):
     plt.savefig(f'{export_name}.pdf', bbox_inches='tight')
 
 
+# ... one identity from different (uni or multi output models) > compare an identity across models
 def plot_cv_from_exp_files(exp_files: List[str], identity_col: str, model_names: List[str], export_folder: str):
     # Retrieve analysis of target_label from experiment files
     analyses, idxs = [], []
@@ -250,6 +258,38 @@ def plot_cv_from_exp_files(exp_files: List[str], identity_col: str, model_names:
     plot_cv_from_analysis(analysis, export_file, x_labels=model_names)
     return
 
+# ... multiple identities from different (uni or output models) > compare a model across identities
+def plot_cv_from_exp_files2(exp_files: List[str], identities_col: List[str], identities_name: List[str], model_name: str, export_folder: str):
+    # Retrieve analysis of identities from experiment files
+    analyses, idxs = [], []
+    for i, exp_file in enumerate(exp_files):
+        kwargs = load_dict(exp_file.replace('exp_file.pkl', 'other_kwargs'))
+        soft = True if kwargs['labelling'] == 'soft' else False
+        analysis = analyze_experiment(exp_file, soft=soft, verbose=True)
+        analyses.append(analysis)
+        # append index of prediction from target_label
+        model_outputs = kwargs['model_output'].split(',')
+        if identities_col[i] in model_outputs:
+            idxs.append(model_outputs.index(identities_col[i]))
+        else:
+            raise Exception(f'Invalid model identity output. Select from list {model_outputs}')
+
+    # Create analysis dict with identity col prediction for all models: scores and incident rates
+    results = ['accuracy', 'chance', 'accuracy_by_chance', 'log_odds_difference', 'roc_aucs',
+               'pr_aucs', 'f1_scores', 'precision', 'recall', 'incidence_rate']
+    analysis = {k: [] for k in results}
+    # ... take n folds of column idx: ndarrays: (n_folds, n_outputs).
+    for i, full_analysis in enumerate(analyses):
+        for k, v in full_analysis.items():
+            if k != 'overall_loss' and k != 'label_loss' and k != 'incidence_rate':
+                analysis[k].append(list(full_analysis[k][:, idxs[i]]))
+            elif k == 'incidence_rate':
+                analysis[k].append(full_analysis[k][idxs[i]])
+    analysis = {k: np.array(v).T if k != 'incidence_rate' else np.array(v) for k, v in analysis.items()}
+
+    export_file = os.path.join(export_folder, '_'.join([model_name]+identities_name))
+    plot_cv_from_analysis(analysis, export_file, x_labels=identities_name)
+    return
 
 ##################
 # Hybrid model functions
@@ -380,7 +420,6 @@ def get_weights(entities: np.ndarray,
     terminology_df = pd.DataFrame.from_dict({'ent_assert': entities})
     if verbose:
         print('  getting terminology dict and group labels')
-    # Weighted terminology columns have checkpoint if using a weights vector
     if weight_f:
         # Load weights if path given
         if weights_root:
@@ -573,7 +612,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         if not fext_kwargs or not all([k in fext_kwargs.keys() for k in FEXT_KWARGS_KEYS]):
             raise Exception(f'Missing dict with feature extractor arguments '
                             f'specifying values for keys: {FEXT_KWARGS_KEYS}')
-        print(f'Starting target prediction model training using weighted KG embeddings.')
+        print(f'Starting target prediction model training using adapted KG.')
     else:
         raise Exception(f'Invalid model type. Select from list: {MODEL_TYPES}')
     # Train multi-output or uni-output models
@@ -587,7 +626,7 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         # Take names of multi-output TargetIdentityLayer
         model_outputs = MULTI_MODEL_OUTPUTS
     print(f'  model outputs: {model_outputs}')
-    outputs_tag = ''.join([group.split('_')[1] for group in model_outputs])
+    outputs_tag = ''.join(model_outputs)
     # Read in data
     if data_path == DATA_PATH:
         data = load_mhs_dataset()
@@ -627,6 +666,8 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
     labelling = 'soft' if soft else 'hard'
     save_name = f'{labelling}_H{n_dense}_B{batch_size}_D{dropout_rate}'
     if model_type == 'llm':
+        # Select GPU device and memory growth
+        select_device(device_id="1", device_type='GPU')
         if model_name == 'roberta-base':
             tokenizer = transformers.RobertaTokenizer.from_pretrained(model_name)
         elif model_name == 'roberta-large':
@@ -668,8 +709,6 @@ def run_target_prediction_model(data_path: str, save_folder: str, model_type: st
         os.mkdir(os.path.join(save_folder, model_type, f'{outputs_tag}_{save_name}'))
     if not os.path.isdir(export_folder):
         os.mkdir(export_folder)
-    # Select GPU device and memory growth
-    select_device(device_id="1", device_type='GPU')
     # Run cross-validation
     try:
         from tensorflow.keras.optimizers.legacy import Adam
@@ -841,6 +880,44 @@ def get_vocab_weights(pipeline):
     for k0, k_excel in encoding.items():
         weights_dict[k_excel]=weights_dict[k0]
     return weights_dict, exclude
+
+def cv_load_predictions(exp_file: str):
+    """ Load predictions from cross-validation """
+    import pickle
+    # load experiment file
+    with open(exp_file, 'rb') as file:
+        results = pickle.load(file)
+    # get idx and predictions
+    test_idx, test_pred = results['test_idxs'], results['y_pred']
+    # concatenate folds
+    test_idx= list(np.concatenate(test_idx, axis=None))
+    test_pred= list(np.concatenate(test_pred, axis=None))
+    return  test_idx, test_pred
+
+def get_features_hybrid(pipeline: Dict, data: pd.DataFrame, text_col:str, id_col:str):
+    """ Get input features for hybrid-based model and interpretations """
+    # Feature extraction: like model_predict but with IRIs and inputs to do classification
+    feature_extractor, model = pipeline['feature_extractor'], pipeline['model']
+    entities = feature_extractor.get_entities_from_texts(df=data, text_col=text_col, id_col=id_col)
+    kg_features = feature_extractor.get_KG_feature_vectors(entities=entities)
+    inputs = [kg_features]
+    # order IRIby feature importance
+    kg = kg_utils.load_owl(feature_extractor.fext_kwargs['kg_path'])
+    kg_dict = kg_utils.get_kg_dict(kg)
+    vocab_IRI = np.array(feature_extractor.vocab)
+    idx = [np.argwhere(kg_features[i] > 0.0).flatten().tolist() for i in range(0, len(kg_features))]
+    matches_IRI = [order_join(vocab_IRI[idx_i], kg_features[i, idx_i]) for i, idx_i in enumerate(idx)]
+    # ... save also the labels and the definition of the top entity
+    matches_label = [';'.join([kg_dict[iri][0] if iri!='' else '' for iri in matches_i.split(';')]) for matches_i in matches_IRI]
+    definitions=[]
+    for matches_i in matches_IRI:
+        iris = matches_i.split(';')
+        if len(iris) > 0:
+            definition = kg_utils.get_definition(iris[0], kg)
+        else:
+            definition=[]
+        definitions.append(definition)
+    return inputs, matches_IRI, matches_label, definitions
 
 
 def main():

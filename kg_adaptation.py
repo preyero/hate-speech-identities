@@ -59,6 +59,7 @@ def disproportionate_stratified_sampling(n: int, df: pd.DataFrame, col_to_sample
     # a. get group sample sizes in ascending order
     sample_sizes = {gi: df.loc[df[gi] == 1].shape[0] for gi in col_to_sample}
     sample_sizes = dict(sorted(sample_sizes.items(), key=operator.itemgetter(1)))
+    #print(sample_sizes)
 
     # b. get sample id lists for each group that are unique according to sample size ascending order
     sampling_dict, ids_inc = {}, []
@@ -73,17 +74,19 @@ def disproportionate_stratified_sampling(n: int, df: pd.DataFrame, col_to_sample
     sampling_sizes = {}
     n_remaining, g_remaining = n, list(sample_sizes.keys())
     for g in sample_sizes.keys():
-        sample_size = sample_sizes[g]
+        sample_size = len(sampling_dict[g])
         subg_n = math.ceil(n_remaining/len(g_remaining))
         sampling_sizes[g] = sample_size if subg_n > sample_size else subg_n
         # update remaining sample sizes and groups to sample from
         n_remaining = n_remaining - sampling_sizes[g]
         g_remaining.remove(g)
+    #print(sampling_sizes)
 
     # b. return the balanced sample of df by drawing randomly samples from each subgroup of its corresponding
     # sample size
     sampled_ids = []
     for g in sample_sizes.keys():
+        # print(f'{g}: sampling_sizes: {sampling_sizes[g]} sample size: {sample_sizes[g]}')
         g_sample = pd.Series(sampling_dict[g]).sample(n=sampling_sizes[g], random_state=1)
         sampled_ids += g_sample.to_list()
 
@@ -108,8 +111,12 @@ def adaptation_subset(d: pd.DataFrame,
     print(f"Sampling distribution with thr={thr} for {y_col}")
     # Create binary columns with groups over thr (g_labels keys) and
     # nones (i.e., texts with no identity group labels over thr ("None"))
-    g_labels = list(g_labels.keys()) if identities[0] in g_labels.keys() else \
-        [subgi for subg in g_labels.items() for subgi in subg]
+    if identities[0] in g_labels.keys():
+        # ... groups
+        g_labels = list(g_labels.keys())
+    else:
+        # ... subgroups
+        g_labels = [subg_i for subg_l in g_labels.values() for subg_i in subg_l]
     g_labels_bin = []
     for g in list(g_labels):
         d.loc[:, f'{g}_{thr}'] = d[f'{g}'].apply(lambda perc: 1 if perc >= thr else 0)
@@ -137,9 +144,9 @@ def adaptation_subset(d: pd.DataFrame,
             pos_df = pos_df[~pos_df.duplicated()]
         neg_df = d.loc[(d[f'{id_1}_{thr}'] == 0) & (d[f'{id_2}_{thr}'] == 0)].copy()
     elif len(identities) == 1:
-        col_pos = [f'{y_col}_{thr}']
-        pos_df = d.loc[d[f'{y_col}_{thr}'] == 1].copy()
-        neg_df = d.loc[d[f'{y_col}_{thr}'] == 0].copy()
+        col_pos = [f'{identities[0]}_{thr}']
+        pos_df = d.loc[d[col_pos[0]] == 1].copy()
+        neg_df = d.loc[d[col_pos[0]] == 0].copy()
     else:
         raise Exception(f'Adaptation not supported for more than 2 identities, provided {identities}')
     n_pos = pos_df.shape[0]
@@ -167,7 +174,7 @@ def adaptation_subset(d: pd.DataFrame,
     print(f'  -- {y_col}: \n{df_train[y_col].value_counts()}')
     df_eval = d.loc[~d.index.isin(df_train.index.to_list())]
 
-    # Save pre-training corpus as CSV in data folder
+    # Save pre-training corpus as CSV in data folder (if not None)
     if data_folder:
         export_name = '{}_{}_{}'.format(dname, thr, y_col)
         o_path = f'{data_folder}/{export_name}.csv'

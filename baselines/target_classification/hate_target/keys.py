@@ -114,6 +114,12 @@ target_politics_cols = [
     'target_politics_socialist',
     'target_politics_other']
 
+# Targets aggregated (pre-training Jigsaw)
+target_jigsaw = [
+    'target_gender_transgender', # OR(['target_gender_transgender_men', 'target_gender_transgender_women', 'target_gender_transgender_unspecified'])
+    'target_gender_othergender', # OR(['target_gender_non_binary', 'target_gender_other'])
+    'target_sexuality_homosexual'] # OR(['target_sexuality_gay', 'target_sexuality_lesbian'])
+
 # All targets
 target_cols = target_race_cols + \
               target_religion_cols + \
@@ -121,4 +127,5 @@ target_cols = target_race_cols + \
               target_gender_cols + \
               target_sexuality_cols + \
               target_age_cols + \
-              target_disability_cols # + target_politics_cols
+              target_disability_cols + \
+              target_jigsaw # + target_politics_cols

@@ -1,7 +1,6 @@
-# Identity Group Identification in Hate Speech Corpora
+# kg-adaptor
 
-This is the data and code in [A Semantically Enriched Approach for Identity Group
-Identification in Hate Speech Corpora]()
+This is the data and code in [Understanding Hate from the Target's Perspective: A Knowledge Grounded Approach]()
 
 ## Project description
 
