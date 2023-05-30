@@ -1,13 +1,13 @@
 # kg-adaptor
 
-This is the data and code in [Understanding Hate from the Target's Perspective: A Knowledge Grounded Approach]()
+This is the data and code in [Knowledge-Grouned Target Group Language Recognition in Hate Speech]()
 
 ## Project description
 
 The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexical-based and transformer-based models 
 considered in the paper, and `models` contains the model outputs.
 
-There are three main files:
+There are two main files:
 - *kg_adaptation.py*: script to learn weights for the KG entities (`./models/adaptation`).
 - *identity_group_identification.py*: script to train models based on adapted KG features or Huggingface transformers [1].
 
