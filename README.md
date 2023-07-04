@@ -1,10 +1,17 @@
 # kg-adaptor
 
-This is the data and code in [Knowledge-Grouned Target Group Language Recognition in Hate Speech]()
+This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech (pending [preprint]()). We use a knowledge graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./models/Figure_1.pdf)).
+
+ A thorough evaluation demonstrates that KG adaptation can be as effective in detection as pre-trained language models like RoBERTa, while also recognising the language instances that contribute most to prediction.
+
+<p align="center">
+ <img src="models/Figure_1.png" alt="drawing" width="800" class="center"/>
+</p>
+
 
 ## Project description
 
-The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexical-based and transformer-based models 
+The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexicon-based and language model-based models 
 considered in the paper, and `models` contains the model outputs.
 
 There are two main files:
@@ -41,7 +48,7 @@ Python 3.8.2 and install requirements.txt (generated using `pip freeze` command)
 ```
 #### Optional (To train Transformer models on GPU)
 
-Follow instructions to install TF with GPU-enabled using a [Virtual Environment](https://www.tensorflow.org/install/pip) if applicable. Ensure to install requirements after setting up the virtual environment as indicated above. To use a specific GPU, adjust `CUDA_VISIBLE_DEVICES` in identity_group_identification script.
+Follow instructions to install TF with GPU-enabled using a [Virtual Environment](https://www.tensorflow.org/install/pip) if applicable. Ensure to install requirements after setting up the virtual environment as indicated above (Conda Environmnt). To use a specific GPU, adjust `CUDA_VISIBLE_DEVICES` in identity_group_identification script.
 
 ## Paper experiments
 
@@ -50,12 +57,11 @@ All results from the paper are in `notebooks` folder.
 We provide two bash scripts to reproduce all models (`hate-speech-identities <username>$ bash notebooks/<script-name>.sh &> notebooks/<script-name>.log`), including the export of Jigsaw Sample (jigsaw_0.5_gendersexualorientation.csv). Please contact us if you would prefer us to share it directly. 
 
 All outputs are shown in the following Jupyter notebooks:
-- *1_data_statistics.ipynb*: statistics for the datasets used in the paper (Table 1).
-- *2_KG_adaptation.ipynb*: evaluation for different weighting schemes for the KG adaptation (Table 2).
-- *3_identity_group_identification.ipynb*: evaluation of hybrid, transformers, and lexical-based models (Figure 3, 
-Table 3, Table 4, Table 5).
+- *1_data_statistics.ipynb*: statistics for the datasets used in the paper (Table 2).
+- *2_KG_adaptation.ipynb*: evaluation for different weighting schemes in the KG adaptation phase.
+- *3_identity_group_identification.ipynb*: evaluation of hybrid, transformers, and lexical-based models (Figure 3, Table 3, Table 4, Table 5).
 
-The excel files in `models/interpretations` folder correspond to the error and entity analyses.
+The excel files in `models/interpretations` folder correspond to the ones used for the error and entity analyses.
 
 ## Resources
 
@@ -67,13 +73,9 @@ The excel files in `models/interpretations` folder correspond to the error and e
 
 ## Baseline repositories
 
-[1] [Targeted Identity Group Prediction in Hate Speech Corpora](https://github.com/dlab-projects/hate_target) by 
-Sachdeva et al (2022). In Proceedings of the Sixth Workshop on Online Abuse and Harms (WOAH). Association for 
-Computational Linguistics, Seattle, Washington (Hybrid), 231–244.
+[1] [Targeted Identity Group Prediction in Hate Speech Corpora](https://github.com/dlab-projects/hate_target) by Sachdeva et al (2022). In Proceedings of the Sixth Workshop on Online Abuse and Harms (WOAH). Association for Computational Linguistics, Seattle, Washington (Hybrid), 231–244.
 
-[2] [Challenges in Automated Debiasing for Toxic Language Detection](https://github.com/XuhuiZhou/Toxic_Debias/tree/main/data) 
-by Zhou et al (2021). Proceedings of the 16th Conference of the European Chapter of the Association for Computational 
-Linguistics: Main Volume.
+[2] [Challenges in Automated Debiasing for Toxic Language Detection](https://github.com/XuhuiZhou/Toxic_Debias/tree/main/data) by Zhou et al (2021). Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume.
 
 
 
