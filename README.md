@@ -1,17 +1,18 @@
 # kg-adaptor
 
-This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech (pending [preprint]()). We use a knowledge graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./models/Figure_1.pdf)).
+This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech (to add: [preprint]()). We use a Knowledge Graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
 
- A thorough evaluation demonstrates that KG adaptation can be as effective in detection as pre-trained language models like RoBERTa, while also recognising the language instances that contribute most to prediction.
+A thorough evaluation demonstrates that our method, based on KG adaptation, can be as effective in detection as pre-trained language models like RoBERTa (System A approaches), while also recognising the language instances that contribute most to prediction (in System B fashion).
 
 <p align="center">
- <img src="models/Figure_1.png" alt="drawing" width="800" class="center"/>
+ <img src="supplemental_material/Figure_1.png" alt="drawing" width="800" class="center"/>
 </p>
 
+Grounding the task in explicit knowledge can better contextualise an automatic approach with the language of the groups most impacted by these technologies. The experiments in this repository show how we use interpretations to better understand model outcomes, the training data, and the ambiguious cases in human annotations.
 
 ## Project description
 
-The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexicon-based and language model-based models 
+The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexical-based and transformer-based models 
 considered in the paper, and `models` contains the model outputs.
 
 There are two main files:
@@ -21,7 +22,7 @@ There are two main files:
 ## Requirements
 
 #### Conda Environment
-Python 3.8.2 and install requirements.txt (generated using `pip freeze` command).
+Python 3.8.2 and install requirements.txt (generated using `pipreqs`).
 ```commandline
     $ conda create --name <env_name> python=3.8.2
     $ conda activate <env_name>
