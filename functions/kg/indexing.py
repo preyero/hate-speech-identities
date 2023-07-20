@@ -16,7 +16,7 @@ from functions.kg.utils import load_owl
 D_IMPORT_PATH = './data/jigsaw.csv'
 TEXT_COL = 'comment_text'
 ID_COL = None
-KG_PATH = './result/gsso.owl'
+KG_PATH = './models/adaptation/gsso.owl'
 
 MATCH_METHODS = ['exact', 'stem', 'variations']
 
@@ -117,7 +117,8 @@ def main():
                      2: "He is the best person I ever met, I love his company.",
                      3: "My best friends,the best gay couple!",
                      4: "My main friends are the happiest gay couple!",
-                     5: "My best friends are the happiest gey couple!"}
+                     5: "My best friends are the happiest gey couple!",
+                     6: "This is the best couple!"}
     for idx, text in example_texts.items():
         df.loc[idx, text_col] = example_texts[idx]
 
@@ -181,7 +182,7 @@ def main():
     for c, synonyms in kg_dict.items():
         # ... query with synonyms of each concept:
         q_list = [si for si in synonyms if isinstance(si, str)]
-        ids_dict[c] = inv_index.query(q_list, text_col, id_col)
+        ids_dict[c] = inv_index.query(q_list, text_col, id_col, 'stem')
     # b. ... or use same implementation in onto functions
     ids_dict = {}
     import owlready2.entity
