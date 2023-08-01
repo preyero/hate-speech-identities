@@ -1,14 +1,14 @@
 # kg-adaptor
 
-This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech (to add: [preprint]()). We use a Knowledge Graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
+This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech ([preprint](https://oro.open.ac.uk/90639/)). We use a Knowledge Graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
 
-A thorough evaluation demonstrates that our method, based on KG adaptation, can be as effective in detection as pre-trained language models like RoBERTa (System A approaches), while also recognising the language instances that contribute most to prediction (in System B fashion).
+A thorough evaluation demonstrates that knowledge-grounded method, based on KG adaptation, can be as effective as pre-trained transformer language models (System A approaches), while also recognising the language instances that contribute most to prediction (in System B fashion).
 
 <p align="center">
  <img src="supplemental_material/Figure_1.png" alt="drawing" width="800" class="center"/>
 </p>
 
-Grounding the task in explicit knowledge can better contextualise an automatic approach with the language of the groups most impacted by these technologies. The experiments in this repository show how we use interpretations to better understand model outcomes, the training data, and the ambiguious cases in human annotations.
+Grounding the task in explicit knowledge can better contextualise an automatic approach with the language of the groups most impacted by these technologies. The experiments in this repository show how we use these interpretations to better understand model outcomes, the training data, and the ambiguious cases in human annotations.
 
 ## Project description
 
@@ -69,7 +69,7 @@ The excel files in `models/interpretations` folder correspond to the ones used f
 - Jigsaw Toxicity Corpus (`all_data.csv`): download directly via [Kaggle](https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification/data?select=all_data.csv) 
 - Gab Hate Corpus (`GabHateCorpus_annotations.tsv`): download through this [link](https://osf.io/edua3/)
 - HateXplain (`dataset.json`): obtained from this [repo](https://github.com/hate-alert/HateXplain/tree/master/Data)
-- XtremeSpeech (`kenya_re.csv`): keep an eye on its [repo](https://github.com/antmarakis/xtremespeech). Please contact the [authors](mailto:antmarakis@cis.lmu.de) to request for access.
+- XtremeSpeech (`kenya_re.csv`): keep an eye on its [repo](https://github.com/antmarakis/xtremespeech), and contact the [authors](mailto:antmarakis@cis.lmu.de) to request for access.
 - Gender, Sex, and Sexual Orientation Ontology (`gsso.owl`): latest release at [repo](https://github.com/Superraptor/GSSO)
 
 ## Baseline repositories
