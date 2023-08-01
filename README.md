@@ -2,7 +2,7 @@
 
 This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech ([preprint](https://oro.open.ac.uk/90639/)). We use a Knowledge Graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
 
-A thorough evaluation demonstrates that knowledge-grounded method, based on KG adaptation, can be as effective as pre-trained transformer language models (System A approaches), while also recognising the language instances that contribute most to prediction (in System B fashion).
+A thorough evaluation demonstrates our knowledge-grounded method, based on KG adaptation, can be as effective as pre-trained transformer language models (System A approaches), while also recognising the language instances that contribute most to prediction (in System B fashion).
 
 <p align="center">
  <img src="supplemental_material/Figure_1.png" alt="drawing" width="800" class="center"/>
