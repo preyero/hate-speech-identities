@@ -1,5 +1,8 @@
 # kg-adaptor
 
+
+[![DOI](https://zenodo.org/badge/616586386.svg)](https://zenodo.org/badge/latestdoi/616586386)
+
 This is the data and code in the paper [Knowledge-Grounded Target Group Language Recognition in Hate Speech](https://ebooks.iospress.nl/volumearticle/64009), together with conference [slides](./supplemental_material/submission650_sem23.pdf) and a [poster](./supplemental_material/poster_sem23.pdf)!
 
 
@@ -79,5 +82,19 @@ The excel files in `models/interpretations` folder correspond to the ones used f
 
 [2] [Challenges in Automated Debiasing for Toxic Language Detection](https://github.com/XuhuiZhou/Toxic_Debias/tree/main/data) by Zhou et al (2021). Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume.
 
+### Citation
 
 
+```bibtex
+@incollection{reyero2023knowledge,
+    title       = {Knowledge-Grounded Target Group Language Recognition in Hate Speech},
+    author      = {Reyero Lobo, Paula and 
+                   Daga, Enrico and 
+                   Alani, Harith and 
+                   Fernandez, Miriam},
+    booktitle   = {Knowledge Graphs: Semantics, Machine Learning, and Languages},
+    pages       = {1--18},
+    year        = {2023},
+    publisher   = {IOS Press}
+}
+```
