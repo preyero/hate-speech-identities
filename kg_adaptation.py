@@ -1,4 +1,4 @@
-""" Create and save in results folder weighted KG and corresponding subset of toxicity corpus for evaluation """
+""" Create and save in output folder weighted KG  """
 
 import os, argparse
 import operator, math

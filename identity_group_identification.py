@@ -71,7 +71,7 @@ def select_device(device_id:str = "1", device_type: str = 'GPU'):
 
 
 ##################
-# Lexical-based functions
+# Lexicon-based functions
 ##################
 def toxic_debias_load(lexicon_path: str):
     data = pd.read_csv(lexicon_path)

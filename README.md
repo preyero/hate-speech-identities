@@ -1,18 +1,19 @@
 # kg-adaptor
 
-This is the data and code in the paper Knowledge-Grounded Target Group Language Recognition in Hate Speech ([preprint](https://oro.open.ac.uk/90639/)). We use a Knowledge Graph to provide transparency to deep learning model predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
+This is the data and code in the paper [Knowledge-Grounded Target Group Language Recognition in Hate Speech](https://ebooks.iospress.nl/volumearticle/64009), together with conference [slides](./supplemental_material/submission650_sem23.pdf) and a [poster](./supplemental_material/poster_sem23.pdf)!
 
-A thorough evaluation demonstrates our knowledge-grounded method, based on KG adaptation, can be as effective as pre-trained transformer language models (System A approaches), while also recognising the language instances that contribute most to prediction (in System B fashion).
+
+We use a Knowledge Graph, and adapt it, to provide interpretability to deep learning predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
 
 <p align="center">
  <img src="supplemental_material/Figure_1.png" alt="drawing" width="800" class="center"/>
 </p>
 
-Grounding the task in explicit knowledge can better contextualise an automatic approach with the language of the groups most impacted by these technologies. The experiments in this repository show how we use these interpretations to better understand model outcomes, the training data, and the ambiguious cases in human annotations.
+Grounding the classification task in explicit knowledge gives context about the groups most impacted by these technologies. Our experiments show how knowledge-grounded interpretations help better understand model outcomes, the training data, and the ambiguious cases in human annotations.
 
 ## Project description
 
-The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexical-based and transformer-based models 
+The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexicon-based and transformer-based models 
 considered in the paper, and `models` contains the model outputs.
 
 There are two main files:
@@ -60,9 +61,9 @@ We provide two bash scripts to reproduce all models (`hate-speech-identities <us
 All outputs are shown in the following Jupyter notebooks:
 - *1_data_statistics.ipynb*: statistics for the datasets used in the paper (Table 2).
 - *2_KG_adaptation.ipynb*: evaluation for different weighting schemes in the KG adaptation phase.
-- *3_identity_group_identification.ipynb*: evaluation of hybrid, transformers, and lexical-based models (Figure 3, Table 3, Table 4, Table 5).
+- *3_identity_group_identification.ipynb*: evaluation of hybrid, transformers, and lexicon-based models (Figure 3, Table 3, Table 4, Table 5).
 
-The excel files in `models/interpretations` folder correspond to the ones used for the error and entity analyses.
+The excel files in `models/interpretations` folder correspond to the ones used for the qualitative analysis of model errors and interpretability.
 
 ## Resources
 
