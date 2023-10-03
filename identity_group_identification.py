@@ -807,6 +807,11 @@ def order_join(entities, weights):
 
 
 def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_col: str, id_col: str):
+    """ 
+    Predict from hybrid or transformer based models 
+
+    @ interpretations: List. If hybrid, provides labels of entities with positive weights, negatives, synonyms and definition for highest entity, and IRIs list.
+    """
     # 0. Check required values
     if not all([k in pipeline.keys() for k in PIPELINE_KEYS]):
         raise Exception(f'Invalid pipeline for transformer or hybrid based '
@@ -837,12 +842,12 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
         outputs = [outputs]
     predict_idx = model_outputs.index(identity_col)
     y_trues, y_preds = data[identity_col].ravel(), outputs[predict_idx].ravel()
-    # 2. Get interpretations
+    # 2. Get interpretations: matched entities, synonyms and definition of highest weighted
     if 'feature_extractor' in locals():
         # ... list of features in descending order by their weight values.
         kg = kg_utils.load_owl(feature_extractor.fext_kwargs['kg_path'])
         kg_dict = kg_utils.get_kg_dict(kg)
-        vocab_iris = feature_extractor.vocab
+        vocab_iris = np.array(feature_extractor.vocab)
         vocab = np.array([kg_dict[iri][0] for iri in vocab_iris])
         if pipeline['kwargs']['weight_f'] == 'multiNB':
             # MultiNB: Coefficients are log-probabilities of class 0: the highest probability for the negative class has the lowest absolute value
@@ -855,12 +860,16 @@ def model_predict(pipeline: Dict, data: pd.DataFrame, identity_col: str, text_co
                    range(0, len(kg_features))]
         pos_matches = [order_join(vocab[idx_i], kg_features[i, idx_i]) for i, idx_i in enumerate(idx_pos)]
         neg_matches = [order_join(vocab[idx_i], kg_features[i, idx_i]) for i, idx_i in enumerate(idx_neg)]
+        pos_IRI = [order_join(vocab_iris[idx_i], kg_features[i, idx_i]) for i, idx_i in enumerate(idx_pos)]
+        neg_IRI = [order_join(vocab_iris[idx_i], kg_features[i, idx_i]) for i, idx_i in enumerate(idx_neg)]
         # ... save synonyms of the match with highest weight
         idxs = [np.argwhere(kg_features[i] == np.amax(kg_features[i])).flatten().tolist()
                 if np.amax(kg_features[i]) != 0.0 else [] for i in range(0, len(kg_features))]
         high_syns = [','.join(kg_dict[vocab_iris[idxs[i][0]]]) if len(idxs[i]) > 0 else '' for i in
                      range(0, len(kg_features))]
-        interpretations = [pos_matches, neg_matches, high_syns]
+        high_def = [kg_utils.get_definition(vocab_iris[idxs[i][0]], kg) if len(idxs[i]) > 0 else '' for i in
+                     range(0, len(kg_features))]
+        interpretations = [pos_matches, neg_matches, high_syns, high_def, pos_IRI, neg_IRI]
     else:
         interpretations = None
     return y_trues, y_preds, interpretations
@@ -893,31 +902,6 @@ def cv_load_predictions(exp_file: str):
     test_idx= list(np.concatenate(test_idx, axis=None))
     test_pred= list(np.concatenate(test_pred, axis=None))
     return  test_idx, test_pred
-
-def get_features_hybrid(pipeline: Dict, data: pd.DataFrame, text_col:str, id_col:str):
-    """ Get input features for hybrid-based model and interpretations """
-    # Feature extraction: like model_predict but with IRIs and inputs to do classification
-    feature_extractor, model = pipeline['feature_extractor'], pipeline['model']
-    entities = feature_extractor.get_entities_from_texts(df=data, text_col=text_col, id_col=id_col)
-    kg_features = feature_extractor.get_KG_feature_vectors(entities=entities)
-    inputs = [kg_features]
-    # order IRIby feature importance
-    kg = kg_utils.load_owl(feature_extractor.fext_kwargs['kg_path'])
-    kg_dict = kg_utils.get_kg_dict(kg)
-    vocab_IRI = np.array(feature_extractor.vocab)
-    idx = [np.argwhere(kg_features[i] > 0.0).flatten().tolist() for i in range(0, len(kg_features))]
-    matches_IRI = [order_join(vocab_IRI[idx_i], kg_features[i, idx_i]) for i, idx_i in enumerate(idx)]
-    # ... save also the labels and the definition of the top entity
-    matches_label = [';'.join([kg_dict[iri][0] if iri!='' else '' for iri in matches_i.split(';')]) for matches_i in matches_IRI]
-    definitions=[]
-    for matches_i in matches_IRI:
-        iris = matches_i.split(';')
-        if len(iris) > 0:
-            definition = kg_utils.get_definition(iris[0], kg)
-        else:
-            definition=[]
-        definitions.append(definition)
-    return inputs, matches_IRI, matches_label, definitions
 
 
 def main():
