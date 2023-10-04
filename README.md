@@ -1,7 +1,9 @@
-# kg-adaptor
-
-
 [![DOI](https://zenodo.org/badge/616586386.svg)](https://zenodo.org/badge/latestdoi/616586386)
+
+# kg-adaptor 
+
+## Run Demo: [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://hate-speech-identities-demo.streamlit.app/)
+
 
 This is the data and code in the paper [Knowledge-Grounded Target Group Language Recognition in Hate Speech](https://ebooks.iospress.nl/volumearticle/64009), together with conference [slides](./supplemental_material/submission650_sem23.pdf) and a [poster](./supplemental_material/poster_sem23.pdf)!
 
