@@ -13,9 +13,10 @@ OUTPUT_GROUP_NAMES = {'age': 'target_age', 'disability': 'target_disability', 'g
                       'sexual_orientation': 'target_sexuality'}
 
 
-def import_dataset(dname: str, d_path: str = None):
+def import_dataset(dname: str, d_path: str = None, o_path: str = None):
     """ Import processed data from 'data' folder or collect and save it from d_path"""
-    o_path = f'./data/{dname}.csv'
+    if not o_path:
+        o_path = f'./data/{dname}.csv'
     if dname == "jigsaw":
         from functions.dataCollect import jigsaw as data_processor
     elif dname == 'xtremespeech':
@@ -38,7 +39,7 @@ def import_dataset(dname: str, d_path: str = None):
         # import file from source folder
         try:
             df, text_col, id_col, identities_dict = data_processor.process_data(d_path, o_path=o_path)
-            print(f'{dname} fetched, prepared, and saved to data folder')
+            print(f'{dname} fetched, prepared, and saved to export path')
         except FileNotFoundError:
             raise FileNotFoundError("{} dataset not found in data folder. "
                                     "Provide valid path to original data file: {}".format(dname, d_path))
@@ -89,10 +90,18 @@ def main():
                         required=False,
                         help="Path to original data file.",
                         )
+    
+    parser.add_argument("--o_path",
+                        default=None,
+                        type=str,
+                        required=False,
+                        help="Path to collected data file.",
+                        )
+
 
     args = parser.parse_args()
 
-    _ = import_dataset(args.d_name, args.d_path)
+    _ = import_dataset(args.d_name, args.d_path, args.o_path)
     return
 
 
