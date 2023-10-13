@@ -8,7 +8,7 @@
 This is the data and code in the paper [Knowledge-Grounded Target Group Language Recognition in Hate Speech](https://ebooks.iospress.nl/volumearticle/64009), together with conference [slides](./supplemental_material/submission650_sem23.pdf) and a [poster](./supplemental_material/poster_sem23.pdf)!
 
 
-We use a Knowledge Graph, and adapt it, to provide interpretability to deep learning predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
+We use a Knowledge Graph (KG), and adapt it, to provide interpretability to deep learning predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
 
 <p align="center">
  <img src="supplemental_material/Figure_1.png" alt="drawing" width="800" class="center"/>
@@ -22,8 +22,10 @@ The project is organised in three main folders. `data` contains the hate speech 
 considered in the paper, and `models` contains the model outputs.
 
 There are two main files:
-- *kg_adaptation.py*: script to learn weights for the KG entities (`./models/adaptation`).
-- *identity_group_identification.py*: script to train models based on adapted KG features or Huggingface transformers [1].
+- *kg_adaptation.py*: script to learn weights for the KG entities based on a downstream task (`./models/adaptation`).
+- *identity_group_identification.py*: script to train text classifiers based on adapted KG features or Huggingface transformer embeddings [1].
+
+If you are planning to use a KG as feature extractor in a text classification task, get in touch!
 
 ## Requirements
 
