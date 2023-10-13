@@ -13,9 +13,10 @@ OUTPUT_GROUP_NAMES = {'age': 'target_age', 'disability': 'target_disability', 'g
                       'sexual_orientation': 'target_sexuality'}
 
 
-def import_dataset(dname: str, d_path: str = None):
+def import_dataset(dname: str, d_path: str = None, o_path: str = None):
     """ Import processed data from 'data' folder or collect and save it from d_path"""
-    o_path = f'./data/{dname}.csv'
+    if not o_path:
+        o_path = f'./data/{dname}.csv'
     if dname == "jigsaw":
         from functions.dataCollect import jigsaw as data_processor
     elif dname == 'xtremespeech':
