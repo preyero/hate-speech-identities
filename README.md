@@ -2,27 +2,26 @@
 
 # kg-adaptor 
 
-## Run Demo: [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_red.svg)](https://hate-speech-identities-demo.streamlit.app/)
+## Knowledge-grounded predictions of your own texts in this Demo 👉  [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_red.svg)](https://hate-speech-identities-demo.streamlit.app/)
 
 
 This is the data and code in the paper [Knowledge-Grounded Target Group Language Recognition in Hate Speech](https://ebooks.iospress.nl/volumearticle/64009), together with conference [slides](./supplemental_material/submission650_sem23.pdf) and a [poster](./supplemental_material/poster_sem23.pdf)!
 
 
-We use a Knowledge Graph (KG), and adapt it, to provide interpretability to deep learning predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)).
+We use a Knowledge Graph (KG), and adapt it, to provide interpretability to deep learning predictions as to why hate speech texts may refer to particular target group identities ([Figure 1](./supplemental_material/Figure_1.pdf)). Specifically, by enriching probability scores with the entities at input that contribute to a prediction.
 
 <p align="center">
  <img src="supplemental_material/Figure_1.png" alt="drawing" width="800" class="center"/>
 </p>
 
-Grounding the classification task in explicit knowledge gives context about the groups most impacted by these technologies. Our experiments show how knowledge-grounded interpretations help better understand model outcomes, the training data, and the ambiguious cases in human annotations.
+Grounding the classification task in semantic knowledge gives context about the identity groups most impacted by these technologies. Our experiments show how *knowledge-grounded interpretations* help better understand model outcomes, the training data, and the ambiguious cases in human annotations.
 
 ## Project description
 
-The project is organised in three main folders. `data` contains the hate speech datasets, `baselines` contains the lexicon-based and transformer-based models 
-considered in the paper, and `models` contains the model outputs.
+The project is organised in three folders. `data` contains the hate speech datasets, `baselines` the lexicon-based (System B) and transformer-based (System A) models used in the paper, and `models` the files from model training.
 
-There are two main files:
-- *kg_adaptation.py*: script to learn weights for the KG entities based on a downstream task (`./models/adaptation`).
+There are two main code files:
+- *kg_adaptation.py*: script to learn weights for the KG entities based on a classification task (`./models/adaptation`).
 - *identity_group_identification.py*: script to train text classifiers based on adapted KG features or Huggingface transformer embeddings [1].
 
 If you are planning to use a KG as feature extractor in a text classification task, get in touch!
@@ -65,12 +64,12 @@ All results from the paper are in `notebooks` folder.
 
 We provide two bash scripts to reproduce all models (`hate-speech-identities <username>$ bash notebooks/<script-name>.sh &> notebooks/<script-name>.log`), including the export of Jigsaw Sample (jigsaw_0.5_gendersexualorientation.csv). Please contact us if you would prefer us to share it directly. 
 
-All outputs are shown in the following Jupyter notebooks:
+All paper results are shown in the following Jupyter notebooks:
 - *1_data_statistics.ipynb*: statistics for the datasets used in the paper (Table 2).
 - *2_KG_adaptation.ipynb*: evaluation for different weighting schemes in the KG adaptation phase.
 - *3_identity_group_identification.ipynb*: evaluation of hybrid, transformers, and lexicon-based models (Figure 3, Table 3, Table 4, Table 5).
 
-The excel files in `models/interpretations` folder correspond to the ones used for the qualitative analysis of model errors and interpretability.
+The excel files in `models/interpretations` contain the qualitative analyses of model errors and interpretability.
 
 ## Resources
 
@@ -79,6 +78,8 @@ The excel files in `models/interpretations` folder correspond to the ones used f
 - HateXplain (`dataset.json`): obtained from this [repo](https://github.com/hate-alert/HateXplain/tree/master/Data)
 - XtremeSpeech (`kenya_re.csv`): keep an eye on its [repo](https://github.com/antmarakis/xtremespeech), and contact the [authors](mailto:antmarakis@cis.lmu.de) to request for access.
 - Gender, Sex, and Sexual Orientation Ontology (`gsso.owl`): latest release at [repo](https://github.com/Superraptor/GSSO)
+
+Meauring Hate Speech (`measuring-hate-speech.csv`) downloads directly from Huggingface when using `identity_group_identification.py` for model training.
 
 ## Baseline repositories
 
