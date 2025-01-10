@@ -1,8 +1,8 @@
 [![DOI](https://zenodo.org/badge/616586386.svg)](https://zenodo.org/badge/latestdoi/616586386)
 
-# kg-adaptor 
+# kg-hateguard-eval
 
-## Knowledge-grounded predictions of your own texts in this Demo 👉  [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_red.svg)](https://hate-speech-identities-demo.streamlit.app/)
+### Try out our hybrid models in this Demo! 👉  [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_red.svg)](https://hate-speech-identities-demo.streamlit.app/)
 
 
 This is the data and code in the paper [Knowledge-Grounded Target Group Language Recognition in Hate Speech](https://ebooks.iospress.nl/volumearticle/64009), together with conference [slides](./supplemental_material/submission650_sem23.pdf) and a [poster](./supplemental_material/poster_sem23.pdf)!
@@ -77,7 +77,7 @@ The excel files in `models/interpretations` contain the qualitative analyses of 
 - Gab Hate Corpus (`GabHateCorpus_annotations.tsv`): download through this [link](https://osf.io/edua3/)
 - HateXplain (`dataset.json`): obtained from this [repo](https://github.com/hate-alert/HateXplain/tree/master/Data)
 - XtremeSpeech (`kenya_re.csv`): keep an eye on its [repo](https://github.com/antmarakis/xtremespeech), and contact the [authors](mailto:antmarakis@cis.lmu.de) to request for access.
-- Gender, Sex, and Sexual Orientation Ontology (`gsso.owl`): latest release at [repo](https://github.com/Superraptor/GSSO)
+- Gender, Sex, and Sexual Orientation Ontology (`gsso.owl`): v2.0.10, latest release at [repo](https://github.com/Superraptor/GSSO)
 
 Meauring Hate Speech (`measuring-hate-speech.csv`) downloads directly from Huggingface when using `identity_group_identification.py` for model training.
 
